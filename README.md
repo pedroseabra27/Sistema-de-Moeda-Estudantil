@@ -6,9 +6,9 @@ Esse projeto consiste no desenvolvimento de um sistema para incentivar o reconhe
 
 Alunos
 ------
-- Pedro Augusto Santos Seabra
 - Breno de Oliveira Brandão
 - Nicolas Almeida Prado da Silva
+-  Pedro Augusto Santos Seabra
 
 Professor
 ---------

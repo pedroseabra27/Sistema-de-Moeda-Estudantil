@@ -41,11 +41,14 @@ Arquitetura e modelagem
 
 Tecnologias escolhidas
 ----------------------
-- Frontend: Svelte 
-- Backend: SvelteKit 
-- Estilização: TailwindCSS
-- Banco e ORM: PostgreSQL + Drizzle ORM
-- Deploy: Railway 
+<img width="60px" height="60px" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/svelte/svelte-original.svg" /> <img width="60px" height="60px" src="https://cdn.simpleicons.org/drizzle" /> <img width="60px" height="60px" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original.svg" /> <img width="60px" height="60px" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg" />
+<img width="60px" height="60px" src="https://railway.app/brand/logo-dark.svg" />
+
+- Svelte
+- Drizzle ORM
+- PostgreSQL
+- TailwindCSS
+- Railway (DEPLOY)
 
 Instalação e execução local
 --------------------------

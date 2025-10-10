@@ -44,11 +44,12 @@ Tecnologias escolhidas
 <img width="60px" height="60px" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/svelte/svelte-original.svg" /> <img width="60px" height="60px" src="https://cdn.simpleicons.org/drizzle" /> <img width="60px" height="60px" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original.svg" /> <img width="60px" height="60px" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg" />
 <img width="60px" height="60px" src="https://railway.app/brand/logo-dark.svg" />
 
-- Svelte
-- Drizzle ORM
-- PostgreSQL
-- TailwindCSS
-- Railway (DEPLOY)
+- Frontend: Svelte
+- Backend: SvelteKit
+- ORM: Drizzle ORM
+- Banco de Dados: PostgreSQL
+- Estilização: TailwindCSS
+- Deploy: Railway 
 
 Instalação e execução local
 --------------------------

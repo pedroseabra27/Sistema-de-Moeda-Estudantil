@@ -18,7 +18,7 @@
 	let isLoading = $state(false);
 	let deleteConfirmId = $state<number | null>(null);
 
-	function openEditModal(aluno: any) {
+	function openEditModal(aluno: SelectAluno) {
 		editingAluno = { ...aluno };
 		const modal = document.getElementById('edit_modal') as HTMLDialogElement;
 		modal.showModal();
@@ -37,7 +37,12 @@
 		try {
 			await editarAluno({
 				id: editingAluno.id,
-				info: editingAluno
+				info: {
+					cpf: editingAluno.cpf,
+					curso: editingAluno.curso,
+					endereco: editingAluno.endereco,
+					saldo: editingAluno.saldo
+				}
 			});
 
 			toast.success('Aluno editado com sucesso!', {

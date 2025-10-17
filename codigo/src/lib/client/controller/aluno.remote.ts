@@ -9,21 +9,26 @@ export const listarAlunos = query(async () => {
 
 export const inserirAluno = command(z.custom<InsertAluno>(), async (info) => {
 	await alunoModel.criar(info);
-	listarAlunos().refresh();
+	await listarAlunos().refresh();
 });
 
 export const editarAluno = command(
 	z.object({
 		id: z.number(),
-		info: z.custom<Partial<InsertAluno>>()
+		info: z.object({
+			cpf: z.string().optional(),
+			curso: z.string().optional(),
+			endereco: z.string().nullable().optional(),
+			saldo: z.number().optional()
+		})
 	}),
-	async (info) => {
-		await alunoModel.atualizar(info.id, info);
-		listarAlunos().refresh();
+	async ({ id, info }) => {
+		await alunoModel.atualizar(id, info);
+		await listarAlunos().refresh();
 	}
 );
 
 export const excluirAluno = command(z.number(), async (id) => {
 	await alunoModel.deletar(id);
-	listarAlunos().refresh();
+	await listarAlunos().refresh();
 });

@@ -32,7 +32,7 @@
 
 	async function handleCreate(userId: string) {
 		try {
-			criarEmpresa({
+			await criarEmpresa({
 				cnpj: formData.cnpj,
 				user_id: userId
 			});

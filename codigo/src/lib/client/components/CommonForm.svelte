@@ -18,13 +18,15 @@
 		formData = $bindable(),
 		handleCreate,
 		title,
-		other
+		other,
+        redirect
 	}: {
 		children: Snippet;
 		formData: FormT;
 		handleCreate: (userId: string) => Promise<void>;
 		title: string;
 		other?: Snippet;
+        redirect:string
 	} = $props();
 
 	let isLoading = $state(false);
@@ -114,7 +116,7 @@
 
 				if (!error) {
 					await handleCreate(data.user.id);
-					await goto('/');
+					await goto(redirect);
 				}
 
 				console.log('SignUp data:', data);

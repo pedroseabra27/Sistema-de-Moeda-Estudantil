@@ -43,6 +43,7 @@
 </script>
 
 <CommonForm
+redirect={"/admin/empresas"}
 	bind:formData
 	handleCreate={async (uId) => {
 		await handleCreate(uId);

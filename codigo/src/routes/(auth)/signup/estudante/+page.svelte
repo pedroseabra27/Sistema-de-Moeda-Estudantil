@@ -44,6 +44,7 @@
 </script>
 
 <CommonForm
+redirect={"/admin/alunos"}
 	bind:formData
 	handleCreate={async (uId) => {
 		await handleCreate(uId);

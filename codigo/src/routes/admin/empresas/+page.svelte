@@ -89,8 +89,8 @@
 		if (!searchTerm) return empresas;
 		return empresas.filter(
 			(empresa) =>
-				empresa.cnpj.includes(searchTerm) ||
-				empresa.nome.toLowerCase().includes(searchTerm.toLowerCase())
+				empresa.cnpj.includes(searchTerm)
+				// empresa.nome.toLowerCase().includes(searchTerm.toLowerCase())
 		);
 	};
 </script>

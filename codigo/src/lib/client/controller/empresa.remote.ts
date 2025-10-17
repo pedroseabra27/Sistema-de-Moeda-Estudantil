@@ -3,31 +3,31 @@ import { empresaModel } from '$lib/server/db/empresa/model';
 import type { InsertEmpresa } from '$lib/server/db/schema';
 import z from 'zod';
 
-export const listarEmpresa = query(async () => {
+export const listarEmpresas = query(async () => {
 	return await empresaModel.listar();
 });
 
-export const criarEmpresa = command(z.custom<InsertEmpresa>(), async (info) => {
-	return await empresaModel.criar(info);
+export const inserirEmpresa = command(z.custom<InsertEmpresa>(), async (info) => {
+	await empresaModel.criar(info);
+	await listarEmpresas().refresh();
 });
 
-export const empresaController = query(() => ({
-	listar: query(async () => {
-		return await empresaModel.listar();
+export const editarEmpresa = command(
+	z.object({
+		id: z.number(),
+		info: z.object({
+			nome: z.string().optional(),
+			cnpj: z.string().optional(),
+			saldo: z.number().optional()
+		})
 	}),
-	criar: command(z.custom<InsertEmpresa>(), async (info) => {
-		return await empresaModel.criar(info);
-	}),
-	atualizar: command(
-		z.object({
-			id: z.number(),
-			info: z.custom<Partial<InsertEmpresa>>()
-		}),
-		async (info) => {
-			return await empresaModel.atualizar(info.id, info);
-		}
-	),
-	deletar: command(z.number(), async (id) => {
-		return await empresaModel.deletar(id);
-	})
-}));
+	async ({ id, info }) => {
+		await empresaModel.atualizar(id, info);
+		await listarEmpresas().refresh();
+	}
+);
+
+export const excluirEmpresa = command(z.number(), async (id) => {
+	await empresaModel.deletar(id);
+	await listarEmpresas().refresh();
+});

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import CommonForm from '$lib/client/components/CommonForm.svelte';
-	import { empresaController } from '$lib/client/controller/empresa.remote';
+	import { criarEmpresa, empresaController } from '$lib/client/controller/empresa.remote';
 	import type { PageProps } from './$types';
 
 	let { data }: PageProps = $props();
@@ -32,12 +32,10 @@
 
 	async function handleCreate(userId: string) {
 		try {
-			await empresaController().then((c) =>
-				c.criar({
-					cnpj: formData.cnpj,
-					user_id: userId
-				})
-			);
+			criarEmpresa({
+				cnpj: formData.cnpj,
+				user_id: userId
+			});
 		} catch (error) {
 			throw new Error('Erro ao criar aluno');
 		}
@@ -62,12 +60,10 @@
 			oninput={handleCNPJinput}
 		/>
 	</label>
-     {#snippet other()}
-        <p class="text-base-content/70 text-sm">
-					Criar como
-					<a href="/signup/estudante" class="link link-primary link-hover font-medium"
-						>estudante</a
-					>
-				</p>
-    {/snippet}
+	{#snippet other()}
+		<p class="text-base-content/70 text-sm">
+			Criar como
+			<a href="/signup/estudante" class="link link-primary link-hover font-medium">estudante</a>
+		</p>
+	{/snippet}
 </CommonForm>

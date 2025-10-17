@@ -1,6 +1,6 @@
 <script lang="ts">
 	import CommonForm from '$lib/client/components/CommonForm.svelte';
-	import { alunoController } from '$lib/client/controller/aluno.remote';
+	import { inserirAluno } from '$lib/client/controller/aluno.remote';
 	import type { PageProps } from './$types';
 
 	let { data }: PageProps = $props();
@@ -31,14 +31,12 @@
 
 	async function handleCreate(userId: string) {
 		try {
-			await alunoController().then((c) =>
-				c.criar({
-					cpf: formData.cpf,
-					user_id: userId,
-					curso: formData.curso,
-					endereco: formData.endereco
-				})
-			);
+			await inserirAluno({
+				cpf: formData.cpf,
+				user_id: userId,
+				curso: formData.curso,
+				endereco: formData.endereco
+			});
 		} catch (error) {
 			throw new Error('Erro ao criar aluno');
 		}

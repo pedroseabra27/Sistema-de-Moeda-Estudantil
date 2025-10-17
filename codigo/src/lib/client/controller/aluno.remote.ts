@@ -3,7 +3,7 @@ import { alunoModel } from '$lib/server/db/aluno/model';
 import type { InsertAluno } from '$lib/server/db/schema';
 import z from 'zod';
 
-export const alunoController = () => ({
+export const alunoController = query(() => ({
 	listar: query(() => {
 		return alunoModel.listar();
 	}),
@@ -22,4 +22,4 @@ export const alunoController = () => ({
 	deletar: command(z.number(), (id) => {
 		return alunoModel.deletar(id);
 	})
-});
+}))

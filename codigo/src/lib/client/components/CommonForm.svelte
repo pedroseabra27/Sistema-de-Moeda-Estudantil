@@ -3,19 +3,34 @@
 	import { authClient } from '$lib/client/auth-client';
 	import Form from '$lib/client/components/Form.svelte';
 	import { Eye, EyeOff, Mail, Lock, User, Home, AlertCircle, CheckCircle } from '@lucide/svelte';
+	import type { Snippet } from 'svelte';
 	import { toast } from 'svelte-sonner';
+
+	type FormT = {
+		nome: string;
+		email: string;
+		senha: string;
+		confirmarSenha: string;
+	};
+
+	let {
+		children,
+		formData = $bindable(),
+		handleCreate,
+		title,
+		other
+	}: {
+		children: Snippet;
+		formData: FormT;
+		handleCreate: (userId: string) => Promise<void>;
+		title: string;
+		other?: Snippet;
+	} = $props();
 
 	let isLoading = $state(false);
 
 	let showPassword = $state(false);
 	let showConfirmPassword = $state(false);
-
-	let formData = $state({
-		nome: '',
-		email: '',
-		senha: '',
-		confirmarSenha: ''
-	});
 
 	let errors = $state({
 		senha: '',
@@ -98,6 +113,7 @@
 				);
 
 				if (!error) {
+					await handleCreate(data.user.id);
 					await goto('/');
 				}
 
@@ -114,12 +130,15 @@
 
 <Form
 	title="Moeda estudantil"
-	badgeText="Criar Conta"
+	badgeText="Criar Conta {title}"
 	dividerText="ou cadastre-se com"
 	footerLinkText="Entrar"
 	footerLinkHref="/login"
 	footerQuestion="Já possui uma conta?"
 >
+	{#snippet otherLinks()}
+		{@render other?.()}
+	{/snippet}
 	<label class="input input-bordered flex w-full items-center gap-2" data-theme="light">
 		<User class="h-4 w-4 opacity-70" />
 		<input
@@ -143,6 +162,8 @@
 			bind:value={formData.email}
 		/>
 	</label>
+
+	{@render children()}
 
 	<div>
 		<label class="input input-bordered flex w-full items-center gap-2" data-theme="light">

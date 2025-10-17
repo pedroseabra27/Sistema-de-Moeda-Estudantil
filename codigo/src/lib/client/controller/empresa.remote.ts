@@ -3,7 +3,7 @@ import { empresaModel } from '$lib/server/db/empresa/model';
 import type { InsertEmpresa } from '$lib/server/db/schema';
 import z from 'zod';
 
-export const empresaController = () => ({
+export const empresaController = query(() => ({
 	listar: query(() => {
 		return empresaModel.listar();
 	}),
@@ -22,4 +22,4 @@ export const empresaController = () => ({
 	deletar: command(z.number(), (id) => {
 		return empresaModel.deletar(id);
 	})
-});
+}))

@@ -10,6 +10,7 @@
 		footerLinkText: string;
 		footerLinkHref: string;
 		footerQuestion: string;
+		otherLinks?: Snippet;
 	};
 
 	let {
@@ -19,7 +20,8 @@
 		dividerText = 'ou cadastre-se com',
 		footerLinkText = 'Entrar',
 		footerLinkHref = '/login',
-		footerQuestion = 'Já possui uma conta?'
+		footerQuestion = 'Já possui uma conta?',
+		otherLinks
 	}: Props = $props();
 </script>
 
@@ -46,8 +48,8 @@
 
 			<div class="divider text-base-content/60 text-xs">{dividerText}</div>
 
-			
-			<div class="mt-4 text-center">
+			<div class=" text-center">
+				{@render otherLinks?.()}
 				<p class="text-base-content/70 text-sm">
 					{footerQuestion}
 					<a href={footerLinkHref} class="link link-primary link-hover font-medium"

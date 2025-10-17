@@ -51,7 +51,7 @@
 </script>
 
 <Form
-	title="Aluguel de carros"
+	title="Moeda estudantil"
 	badgeText="Acesso ao Sistema"
 	dividerText="ou continue com"
 	footerLinkText="Registrar"

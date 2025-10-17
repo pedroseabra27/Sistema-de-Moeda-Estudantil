@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { editarAluno, excluirAluno, listarAlunos } from '$lib/client/controller/aluno.remote';
 	import type { SelectAluno } from '$lib/server/db/schema';
+	import { Pencil, Trash, X } from '@lucide/svelte';
 	import { toast } from 'svelte-sonner';
 	import { fade, fly } from 'svelte/transition';
 
@@ -150,40 +151,14 @@
 										class="btn btn-sm btn-outline btn-primary"
 										onclick={() => openEditModal(aluno)}
 									>
-										<svg
-											xmlns="http://www.w3.org/2000/svg"
-											class="h-4 w-4"
-											fill="none"
-											viewBox="0 0 24 24"
-											stroke="currentColor"
-										>
-											<path
-												stroke-linecap="round"
-												stroke-linejoin="round"
-												stroke-width="2"
-												d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-											/>
-										</svg>
+										<Pencil class="w-4 h-4"/>
 										Editar
 									</button>
 									<button
 										class="btn btn-sm btn-outline btn-error"
 										onclick={() => openDeleteConfirm(aluno.id)}
 									>
-										<svg
-											xmlns="http://www.w3.org/2000/svg"
-											class="h-4 w-4"
-											fill="none"
-											viewBox="0 0 24 24"
-											stroke="currentColor"
-										>
-											<path
-												stroke-linecap="round"
-												stroke-linejoin="round"
-												stroke-width="2"
-												d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-											/>
-										</svg>
+										<Trash class="w-4 h-4"/>
 										Excluir
 									</button>
 								</td>
@@ -203,19 +178,7 @@
 		</div>
 	{:catch error}
 		<div class="alert alert-error shadow-lg" transition:fly={{ y: 20, duration: 300 }}>
-			<svg
-				xmlns="http://www.w3.org/2000/svg"
-				class="h-6 w-6 shrink-0 stroke-current"
-				fill="none"
-				viewBox="0 0 24 24"
-			>
-				<path
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					stroke-width="2"
-					d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
-				/>
-			</svg>
+			<X class="w-4 h-4"/>
 			<div>
 				<h3 class="font-bold">Erro ao carregar alunos</h3>
 				<div class="text-xs">{error.message || 'Tente novamente mais tarde'}</div>

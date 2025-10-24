@@ -8,6 +8,11 @@ export const professorModel = {
 		return result[0];
 	},
 
+	async buscarPorId(id: number){
+		const result = await db.select().from(professorT).where(eq(professorT.id, id)).limit(1);
+		return result[0];
+	},
+
 	async listar() {
 		return await db.select().from(professorT);
 	},

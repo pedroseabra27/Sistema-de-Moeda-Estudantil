@@ -1,5 +1,6 @@
 import { command, query } from '$app/server';
 import { vantagemModel } from '$lib/server/db/vantagem/model';
+import { transacaoModel } from '$lib/server/db/transacao/model';
 import type { InsertVantagem } from '$lib/server/db/vantagem/schema';
 import z from 'zod';
 
@@ -34,3 +35,14 @@ export const excluirVantagem = command(z.number(), async (id) => {
 	await vantagemModel.deletar(id);
 	await listarVantagens().refresh();
 });
+
+export const resgatarVantagem = command(
+	z.object({
+		alunoId: z.number(),
+		vantagemId: z.number()
+	}),
+	async ({ alunoId, vantagemId }) => {
+		await transacaoModel.resgatarVantagem(alunoId, vantagemId);
+		await listarVantagens().refresh();
+	}
+);

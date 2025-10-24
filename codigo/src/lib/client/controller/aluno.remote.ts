@@ -34,15 +34,6 @@ export const excluirAluno = command(z.number(), async (id) => {
 	await listarAlunos().refresh();
 });
 
-export const getAlunoData = query(z.string(), async (cpf) => {
-	const alunos = await alunoModel.listar();
-	const aluno = alunos.find((a) => a.cpf === cpf);
-	if (!aluno) {
-		throw new Error('Aluno não encontrado');
-	}
-	return aluno;
-});
-
 export const getExtratoAluno = query(z.string(), async (cpfAluno) => {
 	return await transacaoModel.listarExtratoAluno(cpfAluno);
 });

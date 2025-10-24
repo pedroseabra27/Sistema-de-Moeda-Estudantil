@@ -1,38 +1,38 @@
 import { db } from '$lib/server/db';
 import { alunoT } from '$lib/server/db/aluno/schema';
-import { professor } from '$lib/server/db/professor/schema';
-import { transacao } from '$lib/server/db/professor/schema';
+import { professorT } from '$lib/server/db/professor/schema';
+import { transacaoT } from '$lib/server/db/transacao/schema';
 import { and, eq, sql } from 'drizzle-orm';
 import type { InferInsertModel } from 'drizzle-orm';
 
-export type InsertTransacao = InferInsertModel<typeof transacao>;
+export type InsertTransacao = InferInsertModel<typeof transacaoT>;
 
 export const transacaoModel = {
 	async listarPorProfessor(cpf: string) {
-		return await db.query.transacao.findMany({
-			where: eq(transacao.professorCPF, cpf),
+		return await db.query.transacaoT.findMany({
+			where: eq(transacaoT.professorCPF, cpf),
 			orderBy: (t, { desc }) => [desc(t.data)]
 		});
 	},
 	async listarExtratoAluno(cpfAluno: string) {
 		return await db
 			.select({
-				id: transacao.id,
-				motivo: transacao.motivo,
-				data: transacao.data,
-				valor: transacao.valor,
-				professorCPF: transacao.professorCPF,
-				professorDepartamento: professor.departamento
+				id: transacaoT.id,
+				motivo: transacaoT.motivo,
+				data: transacaoT.data,
+				valor: transacaoT.valor,
+				professorCPF: transacaoT.professorCPF,
+				professorDepartamento: professorT.departamento
 			})
-			.from(transacao)
-			.leftJoin(professor, eq(transacao.professorCPF, professor.cpf))
-			.where(eq(transacao.alunoCPF, cpfAluno))
-			.orderBy(sql`${transacao.data} DESC`);
+			.from(transacaoT)
+			.leftJoin(professorT, eq(transacaoT.professorCPF, professorT.cpf))
+			.where(eq(transacaoT.alunoCPF, cpfAluno))
+			.orderBy(sql`${transacaoT.data} DESC`);
 	},
 
 	async realizarTransferencia(info: {
 		professorCpf: string;
-		alunoId: number; 
+		alunoId: number;
 		valor: number;
 		motivo: string;
 	}) {
@@ -51,23 +51,19 @@ export const transacaoModel = {
 			}
 
 			const [profAtualizado] = await tx
-				.update(professor)
+				.update(professorT)
 				.set({
-					saldo: sql`${professor.saldo} - ${info.valor}`
+					saldo: sql`${professorT.saldo} - ${info.valor}`
 				})
 				.where(
-					and(
-						eq(professor.cpf, info.professorCpf),
-						sql`${professor.saldo} >= ${info.valor}` 
-					)
+					and(eq(professorT.cpf, info.professorCpf), sql`${professorT.saldo} >= ${info.valor}`)
 				)
-				.returning({ saldo: professor.saldo });
+				.returning({ saldo: professorT.saldo });
 
 			if (!profAtualizado) {
 				throw new Error('Saldo insuficiente para realizar a transferência.');
 			}
 
-			
 			await tx
 				.update(alunoT)
 				.set({
@@ -76,13 +72,13 @@ export const transacaoModel = {
 				.where(eq(alunoT.id, info.alunoId));
 
 			const novaTransacao: InsertTransacao = {
-				id: crypto.randomUUID(), 
+				id: crypto.randomUUID(),
 				motivo: info.motivo,
 				valor: info.valor,
 				professorCPF: info.professorCpf,
-				alunoCPF: aluno.cpf 
+				alunoCPF: aluno.cpf
 			};
-			await tx.insert(transacao).values(novaTransacao);
+			await tx.insert(transacaoT).values(novaTransacao);
 
 			return {
 				novoSaldoProfessor: profAtualizado.saldo,

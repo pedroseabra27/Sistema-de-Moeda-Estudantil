@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { editarAluno, excluirAluno, listarAlunos, getExtratoAluno } from '$lib/client/controller/aluno.remote';
+	import { formatCPF, formatCurrency } from '$lib/client/utils';
 	import type { SelectAluno } from '$lib/server/db/schema';
 	import { Pencil, Trash, X, Receipt, Coins, Calendar } from '@lucide/svelte';
 	import { toast } from 'svelte-sonner';
@@ -78,17 +79,6 @@
 		} finally {
 			isLoading = false;
 		}
-	}
-
-	function formatCPF(cpf: string) {
-		return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
-	}
-
-	function formatCurrency(value: number) {
-		return new Intl.NumberFormat('pt-BR', {
-			style: 'currency',
-			currency: 'BRL'
-		}).format(value);
 	}
 
 	async function openExtratoModal(aluno: SelectAluno) {

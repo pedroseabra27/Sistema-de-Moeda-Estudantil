@@ -1,11 +1,19 @@
-import { query } from '$app/server';
-import { transacaoModel } from '$lib/server/db/transacao/model';
-import z from 'zod';
+import { query } from "$app/server";
+import { transacaoModel } from "$lib/server/db/transacao/model";
+import z from "zod";
 
-export const listarExtratoAluno = query(z.number(), async (alunoId) => {
-	return await transacaoModel.listarExtratoAluno(alunoId);
+export const listarTransacoes = query(async () => {
+    return await transacaoModel.listar();
 });
 
-export const listarResgatesAluno = query(z.number(), async (alunoId) => {
-	return await transacaoModel.listarResgatesPorAluno(alunoId);
+export const listarTransacoesPorProfessor = query(z.number(), async (id: number) => {
+    return await transacaoModel.listarPorProfessor(id);
+});
+
+export const listarTransacoesPorAluno = query(z.number(), async (id: number) => {
+	return await transacaoModel.listarPorAluno(id);
+});
+
+export const listarResgatesAluno = query(z.number(), async (id: number) => {
+	return await transacaoModel.listarResgatesPorAluno(id);
 });

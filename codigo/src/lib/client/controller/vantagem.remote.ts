@@ -8,6 +8,8 @@ export const listarVantagens = query(async () => {
 	return await vantagemModel.listar();
 });
 
+export type ListarVantagesWithEmpresa = Awaited<ReturnType<typeof listarVantagens>>[number];
+
 export const listarVantagensPorEmpresa = query(z.number(), async (empresaId) => {
 	return await vantagemModel.listarPorEmpresa(empresaId);
 });

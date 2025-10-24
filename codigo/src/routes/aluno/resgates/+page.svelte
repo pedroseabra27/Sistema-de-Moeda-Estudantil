@@ -43,7 +43,7 @@
 	const totalGasto = $derived(resgates.reduce((sum, r) => sum + r.valor, 0));
 </script>
 
-<div class="container mx-auto p-4">
+<div class="p-4">
 	<div class="mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
 		<div>
 			<h1 class="text-primary mb-2 text-3xl font-bold">Minhas Vantagens Resgatadas</h1>
@@ -80,7 +80,7 @@
 	{:else}
 		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 			{#each resgates as resgate}
-				<div class="card bg-base-100 shadow-lg hover:shadow-xl transition-shadow">
+				<div class="card border border-base-200 bg-base-100 shadow-lg hover:shadow-xl transition-shadow">
 					<div class="card-body">
 						<!-- Ícone e Badge -->
 						<div class="flex items-start justify-between mb-3">

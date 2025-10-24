@@ -5,9 +5,7 @@
 	import {
 		enviarMoedas,
 		listarAlunosParaTransferencia,
-
 		type AlunoWithUser
-
 	} from '$lib/client/controller/professor.remote';
 	import type { PageData } from './$types';
 	import { Info, X } from '@lucide/svelte';
@@ -66,7 +64,7 @@
 				motivo: motivo
 			});
 
-			await invalidateAll()
+			await invalidateAll();
 			toast.success('Moedas enviadas com sucesso!', { id: toastId });
 			closeModal();
 		} catch (error: any) {
@@ -85,27 +83,25 @@
 	}
 </script>
 
-<div class="bg-base-200 min-h-screen p-4 md:p-6">
-	<div class="card bg-primary text-primary-content mb-8 shadow-xl">
-		<div class="card-body">
-			<div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-				<div>
-					<h1 class="card-title text-3xl">Distribuição de Moedas</h1>
-					<p class="mt-2 opacity-90">Professor: {data.professor.cpf}</p>
-					<p class="text-sm opacity-80">Departamento: {data.professor.departamento}</p>
-				</div>
-				<div class="stats bg-secondary text-primary-content shadow">
-					<div class="stat">
-						<div class="stat-title text-primary-content opacity-80">Saldo Disponível</div>
-						<div class="stat-value">{data.professor.saldo}</div>
-						<div class="stat-desc text-primary-content opacity-80">moedas</div>
-					</div>
+<div class=" min-h-screen p-4 md:p-6">
+	<div class="mb-8 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
+		<div class="flex w-full items-center justify-between">
+			<div>
+				<h1 class="card-title text-3xl text-primary">Distribuição de Moedas</h1>
+				<p class="mt-2 opacity-90">Professor: {data.professor.cpf}</p>
+				<p class="text-sm opacity-80">Departamento: {data.professor.departamento}</p>
+			</div>
+			<div class="stats bg-secondary text-primary-content shadow">
+				<div class="stat">
+					<div class="stat-title text-primary-content opacity-80">Saldo Disponível</div>
+					<div class="stat-value">{data.professor.saldo}</div>
+					<div class="stat-desc text-primary-content opacity-80">moedas</div>
 				</div>
 			</div>
 		</div>
 	</div>
 
-	<div class="card bg-base-100 shadow-xl">
+	<div class="card border-base-200 bg-base-100 border shadow-xl">
 		<div class="card-body">
 			<div class="mb-4 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
 				<h2 class="card-title text-2xl">Alunos Disponíveis</h2>
@@ -202,7 +198,7 @@
 					class="btn btn-circle btn-ghost btn-sm"
 					disabled={isLoading}
 				>
-					<X/>
+					<X />
 				</button>
 			</div>
 

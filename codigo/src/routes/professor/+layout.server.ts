@@ -1,22 +1,22 @@
 import { redirect } from '@sveltejs/kit';
-import type { PageServerLoad } from './$types';
+import type { LayoutServerLoad } from './$types';
 import { db } from '$lib/server/db';
 
 export const load = (async ({ locals }) => {
 
-    if (!locals.session?.user) {
+    if (!locals.session) {
         throw redirect(303, '/login');
     }
 
     const user = locals.session?.user;
 
-    if (user.role !== 'professor') {
-        console.error('User is not a professor:', user);
-        throw redirect(303, '/');
-    }
+    // if (user.role !== 'professor') {
+    //     console.error('User is not a professor:', user);
+    //     throw redirect(303, '/');
+    // }
 
     const professor = await db.query.professorT.findFirst({
-        where: (professor, { eq }) => eq(professor.id, 4),
+        where: (professor, { eq }) => eq(professor.userId, user.id),
     })
 
     if (!professor) {
@@ -24,5 +24,5 @@ export const load = (async ({ locals }) => {
         throw redirect(303, '/');
     }
 
-    return { professor };
-}) satisfies PageServerLoad;
+    return { professor,user };
+}) satisfies LayoutServerLoad;

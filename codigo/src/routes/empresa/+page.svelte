@@ -20,7 +20,7 @@
 			</div>
 		</div>
 
-		<div class="card border border-base-200 bg-base-100 shadow-lg">
+		<!-- <div class="card border border-base-200 bg-base-100 shadow-lg">
 			<div class="card-body">
 				<h2 class="card-title">Histórico</h2>
 				<p>Visualize o histórico de resgates das suas vantagens.</p>
@@ -28,6 +28,6 @@
 					<a href="/empresa/historico" class="btn btn-primary">Acessar</a>
 				</div>
 			</div>
-		</div>
+		</div> -->
 	</div>
 </div>

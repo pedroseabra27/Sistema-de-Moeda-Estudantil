@@ -167,13 +167,13 @@
 			{editingVantagem.id ? 'Editar Vantagem' : 'Nova Vantagem'}
 		</h3>
 		<form method="dialog" onsubmit={handleSubmit} class="space-y-4">
-			<div class="form-control">
+			<div class="form-control flex flex-col">
 				<label class="label" for="descricao">
 					<span class="label-text font-medium">Descrição da Vantagem</span>
 				</label>
 				<textarea
 					id="descricao"
-					class="textarea textarea-bordered focus:textarea-primary"
+					class="textarea textarea-bordered w-full"
 					rows="4"
 					bind:value={editingVantagem.descricao}
 					placeholder="Ex: 10% de desconto no restaurante universitário"
@@ -187,7 +187,7 @@
 				<input
 					type="number"
 					id="valor"
-					class="input input-bordered focus:input-primary"
+					class="input input-bordered focus:input-primary w-full"
 					bind:value={editingVantagem.valor}
 					min="1"
 					step="1"

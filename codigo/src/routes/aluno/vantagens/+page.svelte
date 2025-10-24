@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { listarVantagens, resgatarVantagem } from '$lib/client/controller/vantagem.remote';
+	import { listarVantagens, resgatarVantagem, type ListarVantagesWithEmpresa } from '$lib/client/controller/vantagem.remote';
 	import type { SelectVantagem } from '$lib/server/db/vantagem/schema';
 	import { Gift, Coins, Building2 } from '@lucide/svelte';
 	import { toast } from 'svelte-sonner';
@@ -9,9 +9,9 @@
 	let alunoId = $derived(data.aluno.id);
 	let saldoAtual = $state(data.aluno.saldo);
 
-	let vantagens = $state<SelectVantagem[]>([]);
+	let vantagens = $state<ListarVantagesWithEmpresa[]>([]);
 	let isLoading = $state(false);
-	let selectedVantagem = $state<SelectVantagem | null>(null);
+	let selectedVantagem = $state<ListarVantagesWithEmpresa | null>(null);
 
 	$effect(() => {
 		carregarVantagens();
@@ -28,7 +28,7 @@
 		}
 	}
 
-	function openConfirmModal(vantagem: SelectVantagem) {
+	function openConfirmModal(vantagem: ListarVantagesWithEmpresa) {
 		selectedVantagem = vantagem;
 		const modal = document.getElementById('confirm_modal') as HTMLDialogElement;
 		modal.showModal();
@@ -105,7 +105,7 @@
 		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 			{#each vantagens as vantagem}
 				{@const podePagar = canAfford(vantagem.valor)}
-				<div class="card bg-base-100 shadow-lg hover:shadow-xl transition-shadow {!podePagar ? 'opacity-60' : ''}">
+				<div class="card border border-base-200 bg-base-100 shadow-lg hover:shadow-xl transition-shadow {!podePagar ? 'opacity-60' : ''}">
 					<div class="card-body">
 						<div class="flex items-start justify-between mb-2">
 							<Gift class="w-8 h-8 text-primary" />

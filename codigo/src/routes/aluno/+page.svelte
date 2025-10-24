@@ -10,13 +10,13 @@
 	</div>
 
 	<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-		<a href="/aluno/saldo" class="card border border-base-200 bg-gradient-to-br from-primary to-primary-focus text-primary-content shadow-lg hover:shadow-xl transition-shadow cursor-pointer">
+		<div class="card border border-base-200 bg-gradient-to-br from-primary to-primary-focus text-primary-content shadow-lg hover:shadow-xl transition-shadow">
 			<div class="card-body">
 				<h2 class="card-title text-lg">Saldo Disponível</h2>
 				<p class="text-4xl font-bold">{data.aluno.saldo}</p>
 				<p class="text-sm opacity-80">moedas estudantis</p>
 			</div>
-		</a>
+		</div>
 
 		<div class="card border border-base-200 bg-base-100 shadow-lg">
 			<div class="card-body">

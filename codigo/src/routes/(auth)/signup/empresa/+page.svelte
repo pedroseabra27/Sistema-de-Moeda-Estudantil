@@ -2,6 +2,7 @@
 	import CommonForm from '$lib/client/components/CommonForm.svelte';
 	import { inserirEmpresa } from '$lib/client/controller/empresa.remote';
 	import type { PageProps } from './$types';
+			import { authClient } from '$lib/client/auth-client';
 
 	let { data }: PageProps = $props();
 
@@ -36,6 +37,13 @@
 				cnpj: formData.cnpj,
 				user_id: userId
 			});
+
+			// const user = await authClient.admin.setRole({
+			// 	userId,
+			// 	role: 'empresa'
+			// });
+
+			// console.log('Empresa criada com sucesso:', user);
 		} catch (error) {
 			throw new Error('Erro ao criar empresa');
 		}
@@ -43,7 +51,7 @@
 </script>
 
 <CommonForm
-redirect={"/admin/empresas"}
+redirect={"/empresa"}
 	bind:formData
 	handleCreate={async (uId) => {
 		await handleCreate(uId);

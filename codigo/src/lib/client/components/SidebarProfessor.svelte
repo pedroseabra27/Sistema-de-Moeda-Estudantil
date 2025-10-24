@@ -30,6 +30,11 @@
 	};
 
 	const navigationItems: SidebarItem[] = $derived([
+        	{
+			icon: LayoutDashboard,
+			label: 'Dashboard',
+			href: '/professor'
+		},
 		{
 			icon: User,
 			label: 'Alunos',

@@ -43,11 +43,6 @@
 			href: '/aluno/resgates'
 		},
 		{
-			icon: Wallet,
-			label: 'Meu Saldo',
-			href: '/aluno/saldo'
-		},
-		{
 			icon: History,
 			label: 'Histórico',
 			href: '/aluno/historico'

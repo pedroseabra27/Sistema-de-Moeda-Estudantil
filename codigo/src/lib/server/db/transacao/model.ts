@@ -9,9 +9,29 @@ import { vantagemT } from '../schema';
 export type InsertTransacao = InferInsertModel<typeof transacaoT>;
 
 export const transacaoModel = {
+	async listar() {
+		return await db.query.transacaoT.findMany({
+			orderBy: (t, { desc }) => [desc(t.data)]
+		});
+	},
 	async listarPorProfessor(id: number) {
 		return await db.query.transacaoT.findMany({
 			where: eq(transacaoT.professorId, id),
+			orderBy: (t, { desc }) => [desc(t.data)]
+		});
+	},
+	async listarPorAluno(id: number) {
+		return await db.query.transacaoT.findMany({
+			where: eq(transacaoT.alunoId, id),
+			orderBy: (t, { desc }) => [desc(t.data)]
+		});
+	},
+	async listarResgatesPorAluno(id: number) {
+		return await db.query.transacaoT.findMany({
+			where: and(
+				eq(transacaoT.alunoId, id),
+				sql`LOWER(${transacaoT.motivo}) LIKE ${'resgate%'}`
+			),
 			orderBy: (t, { desc }) => [desc(t.data)]
 		});
 	},
@@ -133,11 +153,4 @@ export const transacaoModel = {
 			};
 		});
 	},
-
-	async listarResgatesPorAluno(alunoId: number) {
-		return await db.query.transacaoT.findMany({
-			where: and(eq(transacaoT.alunoId, alunoId), sql`${transacaoT.professorId} IS NULL`),
-			orderBy: (t, { desc }) => [desc(t.data)]
-		});
-	}
 };

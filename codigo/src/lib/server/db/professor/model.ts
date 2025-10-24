@@ -1,9 +1,8 @@
-import { db } from '$lib/server/db'; // Isto agora importa o 'db' corrigido
+import { db } from '$lib/server/db';
 import { professor } from './schema';
 import { eq } from 'drizzle-orm';
 import type { InferSelectModel, InferInsertModel } from 'drizzle-orm';
 
-// Tipos inferidos do schema
 type Professor = InferSelectModel<typeof professor>;
 type ProfessorInsert = InferInsertModel<typeof professor>;
 type ProfessorUpdate = Partial<Omit<ProfessorInsert, 'cpf'>>;
@@ -15,8 +14,6 @@ export const professorModel = {
 	},
 
 	async listar(): Promise<Professor[]> {
-		// Esta consulta é a mais simples possível.
-		// Se isto falhar, o problema é a tabela ou a conexão.
 		return await db.select().from(professor);
 	},
 

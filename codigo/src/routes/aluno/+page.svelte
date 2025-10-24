@@ -11,13 +11,13 @@
 
 	<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
 		<!-- Card de Saldo -->
-		<div class="card bg-gradient-to-br from-primary to-primary-focus text-primary-content shadow-lg">
+		<a href="/aluno/saldo" class="card bg-gradient-to-br from-primary to-primary-focus text-primary-content shadow-lg hover:shadow-xl transition-shadow cursor-pointer">
 			<div class="card-body">
 				<h2 class="card-title text-lg">Saldo Disponível</h2>
 				<p class="text-4xl font-bold">{data.aluno.saldo}</p>
 				<p class="text-sm opacity-80">moedas estudantis</p>
 			</div>
-		</div>
+		</a>
 
 		<!-- Card de Vantagens -->
 		<div class="card bg-base-100 shadow-lg">

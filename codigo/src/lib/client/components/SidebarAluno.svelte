@@ -39,8 +39,7 @@
 		{
 			icon: Wallet,
 			label: 'Meu Saldo',
-			href: '/aluno/saldo',
-			disabled: true
+			href: '/aluno/saldo'
 		},
 		{
 			icon: History,

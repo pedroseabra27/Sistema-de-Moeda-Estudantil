@@ -24,7 +24,7 @@
 				{
 					email: formData.email,
 					password: formData.password,
-					callbackURL: '/admin',
+					callbackURL: '/',
 					rememberMe: formData.remember
 				},
 				{

@@ -1,10 +1,15 @@
 <script lang="ts">
 	import { fade } from 'svelte/transition';
 	import {
+		UsersIcon,
 		LogOutIcon,
 		type Icon as IconType,
 		LayoutDashboard,
-		Package,
+		PackageOpen,
+		Store,
+		Cog,
+		User,
+		GraduationCap,
 		History
 	} from '@lucide/svelte';
 	import { page } from '$app/state';
@@ -24,24 +29,18 @@
 		disabled?: boolean;
 	};
 
-	const navigationItems: SidebarItem[] = [
+	const navigationItems: SidebarItem[] = $derived([
 		{
-			icon: LayoutDashboard,
-			label: 'Dashboard',
-			href: '/empresa'
+			icon: User,
+			label: 'Alunos',
+			href: '/professor/distribuir'
 		},
 		{
-			icon: Package,
-			label: 'Minhas Vantagens',
-			href: '/empresa/vantagens'
-		},
-		// {
-		// 	icon: History,
-		// 	label: 'Histórico',
-		// 	href: '/empresa/historico',
-		// 	disabled: true
-		// }
-	];
+			icon: History,
+			label: 'Histórico',
+			href: '/professor/historico'
+		}
+	]);
 
 	const settingsItems: SidebarItem[] = [{ icon: LogOutIcon, label: 'Sair' }];
 
@@ -61,13 +60,14 @@
 {/if}
 
 <aside
-	class="bg-base-100 fixed left-0 top-0 z-50 flex h-full w-[280px] transform flex-col shadow-xl transition-transform duration-300 {isOpen
-		? 'translate-x-0'
-		: '-translate-x-full md:translate-x-0'}"
+	class={[
+		'bg-base-100 fixed left-0 top-0 z-50 flex h-full w-[280px] transform flex-col shadow-xl transition-transform duration-300',
+		isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
+	]}
 >
 	<div class="border-base-200 border-b p-4">
 		<div class="flex items-center">
-			<span class="mx-3 text-lg font-bold">Portal Empresa</span>
+			<span class="mx-3 text-lg font-bold text-[var(--sidebar-foreground)]">Sistema de Moeda</span>
 		</div>
 	</div>
 
@@ -96,39 +96,47 @@
 		{/if}
 
 		<div class="space-y-1">
-			{#each settingsItems as item}
-				{@render button(item)}
-			{/each}
+			{#if $session.data}
+				{#each settingsItems as item}
+					<button
+						onclick={async () => {
+							await authClient.signOut();
+							await goto('/login');
+						}}
+						class="text-base-content hover:bg-base-200 flex w-full cursor-pointer items-center gap-3 rounded-lg px-4 py-2 transition-colors"
+					>
+						<item.icon class="h-5 w-5" />
+						<span class="font-medium">{item.label}</span>
+					</button>
+				{/each}
+			{:else}
+				{@render button({ icon: UsersIcon, label: 'Login', href: '/login' })}
+			{/if}
 		</div>
 	</div>
 </aside>
 
 {#snippet button(item: SidebarItem)}
-	{#if item.href}
+	{#if item.disabled}
+		<div
+			class="text-base-content flex cursor-not-allowed items-center gap-3 rounded-lg px-4 py-2 opacity-50"
+			aria-disabled="true"
+		>
+			<item.icon class="h-4 w-4" />
+			<span class="text-md font-medium">{item.label}</span>
+		</div>
+	{:else}
 		<a
 			href={item.href}
-			class="hover:bg-base-200 text-base-content flex w-full items-center rounded-lg p-3 transition-colors {currentPath ===
-			item.href
-				? 'bg-primary text-primary-content'
-				: ''} {item.disabled ? 'pointer-events-none opacity-50' : ''}"
+			class={[
+				'flex items-center gap-3 rounded-lg px-4 py-2 transition-colors',
+				currentPath === item.href
+					? 'bg-primary text-primary-content'
+					: 'text-base-content hover:bg-base-200'
+			]}
 		>
-			<svelte:component this={item.icon} class="h-5 w-5" />
-			<span class="ml-3 text-sm font-medium">{item.label}</span>
+			<item.icon class="h-4 w-4" />
+			<span class="text-md font-medium">{item.label}</span>
 		</a>
-	{:else}
-		<button
-			type="button"
-			class="hover:bg-base-200 text-base-content flex w-full items-center rounded-lg p-3 transition-colors"
-			onclick={async () => {
-				if (item.label === 'Sair') {
-					await authClient.signOut();
-					goto('/login');
-				}
-			}}
-		>
-			<svelte:component this={item.icon} class="h-5 w-5" />
-			<span class="ml-3 text-sm font-medium">{item.label}</span>
-		</button>
 	{/if}
 {/snippet}
-

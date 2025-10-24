@@ -6,8 +6,8 @@ export const transacaoT = pgTable('transacao', {
 	motivo: text('motivo').notNull(),
 	data: timestamp('data').defaultNow().notNull(),
 	valor: integer('valor').notNull().default(1000),
-	professorCPF: text('professor_cpf').references(() => professorT.cpf),
-	alunoCPF: text('aluno_cpf').references(() => alunoT.cpf)
+	professorId: integer('professor_id').references(() => professorT.id),
+	alunoId: integer('aluno_id').references(() => alunoT.id)
 });
 
 

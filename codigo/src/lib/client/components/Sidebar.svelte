@@ -8,9 +8,8 @@
 		PackageOpen,
 		Store,
 		Cog,
-
-		User
-
+		User,
+		GraduationCap 
 	} from '@lucide/svelte';
 	import { page } from '$app/state';
 	import { authClient } from '$lib/client/auth-client';
@@ -39,6 +38,11 @@
 			icon: PackageOpen,
 			label: 'Empresas',
 			href: '/admin/empresas'
+		},
+		{
+			icon: GraduationCap,
+			label: 'Professores',
+			href: '/admin/professor'
 		}
 	]);
 
@@ -67,9 +71,7 @@
 >
 	<div class="border-base-200 border-b p-4">
 		<div class="flex items-center">
-			<span class="mx-3 text-lg font-bold text-[var(--sidebar-foreground)]"
-				>Sistema de Moeda</span
-			>
+			<span class="mx-3 text-lg font-bold text-[var(--sidebar-foreground)]">Sistema de Moeda</span>
 		</div>
 	</div>
 

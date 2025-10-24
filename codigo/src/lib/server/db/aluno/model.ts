@@ -6,6 +6,11 @@ export const alunoModel = {
 	listar: async () => {
 		return await db.query.alunoT.findMany();
 	},
+	buscarPorId: async (id: SelectAluno['id']) => {
+		return await db.query.alunoT.findFirst({
+			where: eq(alunoT.id, id)
+		});
+	},
 	criar: async (info: InsertAluno) => {
 		return await db.insert(alunoT).values(info);
 	},

@@ -4,7 +4,11 @@ import { alunoT, type InsertAluno, type SelectAluno } from './schema';
 
 export const alunoModel = {
 	listar: async () => {
-		return await db.query.alunoT.findMany();
+		return await db.query.alunoT.findMany({
+			with: {
+				user: true
+			}
+		});
 	},
 	buscarPorId: async (id: SelectAluno['id']) => {
 		return await db.query.alunoT.findFirst({

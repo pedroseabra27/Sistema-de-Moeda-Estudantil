@@ -2,37 +2,37 @@ import { db } from '$lib/server/db';
 import { alunoT } from '$lib/server/db/aluno/schema';
 import { professorT } from '$lib/server/db/professor/schema';
 import { transacaoT } from '$lib/server/db/transacao/schema';
-import { vantagemT } from '$lib/server/db/vantagem/schema';
 import { and, eq, sql } from 'drizzle-orm';
 import type { InferInsertModel } from 'drizzle-orm';
+import { vantagemT } from '../schema';
 
 export type InsertTransacao = InferInsertModel<typeof transacaoT>;
 
 export const transacaoModel = {
-	async listarPorProfessor(cpf: string) {
+	async listarPorProfessor(id: number) {
 		return await db.query.transacaoT.findMany({
-			where: eq(transacaoT.professorCPF, cpf),
+			where: eq(transacaoT.professorId, id),
 			orderBy: (t, { desc }) => [desc(t.data)]
 		});
 	},
-	async listarExtratoAluno(cpfAluno: string) {
+	async listarExtratoAluno(idAluno: number) {
 		return await db
 			.select({
 				id: transacaoT.id,
 				motivo: transacaoT.motivo,
 				data: transacaoT.data,
 				valor: transacaoT.valor,
-				professorCPF: transacaoT.professorCPF,
+				professorId: transacaoT.professorId,
 				professorDepartamento: professorT.departamento
 			})
 			.from(transacaoT)
-			.leftJoin(professorT, eq(transacaoT.professorCPF, professorT.cpf))
-			.where(eq(transacaoT.alunoCPF, cpfAluno))
+			.leftJoin(professorT, eq(transacaoT.professorId, professorT.id))
+			.where(eq(transacaoT.alunoId, idAluno))
 			.orderBy(sql`${transacaoT.data} DESC`);
 	},
 
 	async realizarTransferencia(info: {
-		professorCpf: string;
+		professorId: number;
 		alunoId: number;
 		valor: number;
 		motivo: string;
@@ -44,7 +44,7 @@ export const transacaoModel = {
 		return await db.transaction(async (tx) => {
 			const aluno = await tx.query.alunoT.findFirst({
 				where: eq(alunoT.id, info.alunoId),
-				columns: { cpf: true, saldo: true }
+				columns: { id: true, saldo: true }
 			});
 
 			if (!aluno) {
@@ -57,7 +57,7 @@ export const transacaoModel = {
 					saldo: sql`${professorT.saldo} - ${info.valor}`
 				})
 				.where(
-					and(eq(professorT.cpf, info.professorCpf), sql`${professorT.saldo} >= ${info.valor}`)
+					and(eq(professorT.id, info.professorId), sql`${professorT.saldo} >= ${info.valor}`)
 				)
 				.returning({ saldo: professorT.saldo });
 
@@ -76,8 +76,8 @@ export const transacaoModel = {
 				id: crypto.randomUUID(),
 				motivo: info.motivo,
 				valor: info.valor,
-				professorCPF: info.professorCpf,
-				alunoCPF: aluno.cpf
+				professorId: info.professorId,
+				alunoId: aluno.id
 			};
 			await tx.insert(transacaoT).values(novaTransacao);
 
@@ -87,7 +87,6 @@ export const transacaoModel = {
 			};
 		});
 	},
-
 	async resgatarVantagem(alunoId: number, vantagemId: number) {
 		return await db.transaction(async (tx) => {
 			const aluno = await tx.query.alunoT.findFirst({

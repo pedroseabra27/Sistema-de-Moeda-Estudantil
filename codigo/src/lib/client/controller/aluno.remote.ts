@@ -1,5 +1,6 @@
 import { command, query } from '$app/server';
 import { alunoModel } from '$lib/server/db/aluno/model';
+import { transacaoModel } from '$lib/server/db/transacao/model';
 import type { InsertAluno } from '$lib/server/db/schema';
 import z from 'zod';
 
@@ -31,4 +32,17 @@ export const editarAluno = command(
 export const excluirAluno = command(z.number(), async (id) => {
 	await alunoModel.deletar(id);
 	await listarAlunos().refresh();
+});
+
+export const getAlunoData = query(z.string(), async (cpf) => {
+	const alunos = await alunoModel.listar();
+	const aluno = alunos.find((a) => a.cpf === cpf);
+	if (!aluno) {
+		throw new Error('Aluno não encontrado');
+	}
+	return aluno;
+});
+
+export const getExtratoAluno = query(z.string(), async (cpfAluno) => {
+	return await transacaoModel.listarExtratoAluno(cpfAluno);
 });

@@ -3,5 +3,5 @@ export function formatCPF(cpf: string) {
 }
 
 export function formatCurrency(value: number) {
-    return value
+    return `${value} moeda${value !== 1 ? 's' : ''}`;
 }

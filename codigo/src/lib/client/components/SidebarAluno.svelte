@@ -6,7 +6,8 @@
 		LayoutDashboard,
 		Gift,
 		Wallet,
-		History
+		History,
+		Package
 	} from '@lucide/svelte';
 	import { page } from '$app/state';
 	import { authClient } from '$lib/client/auth-client';
@@ -37,10 +38,19 @@
 			href: '/aluno/vantagens'
 		},
 		{
+			icon: Package,
+			label: 'Meus Resgates',
+			href: '/aluno/resgates'
+		},
+		{
+			icon: Wallet,
+			label: 'Meu Saldo',
+			href: '/aluno/saldo'
+		},
+		{
 			icon: History,
 			label: 'Histórico',
-			href: '/aluno/historico',
-			disabled: true
+			href: '/aluno/historico'
 		}
 	];
 

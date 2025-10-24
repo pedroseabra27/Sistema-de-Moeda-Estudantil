@@ -132,5 +132,12 @@ export const transacaoModel = {
 				novoSaldo: aluno.saldo - valorVantagem
 			};
 		});
+	},
+
+	async listarResgatesPorAluno(alunoId: number) {
+		return await db.query.transacaoT.findMany({
+			where: and(eq(transacaoT.alunoId, alunoId), sql`${transacaoT.professorId} IS NULL`),
+			orderBy: (t, { desc }) => [desc(t.data)]
+		});
 	}
 };

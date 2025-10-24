@@ -86,7 +86,7 @@
 	}
 </script>
 
-<div class="container mx-auto p-4">
+<div class="p-4">
 	<div class="mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
 		<div>
 			<h1 class="text-primary mb-2 text-3xl font-bold">Minhas Vantagens</h1>

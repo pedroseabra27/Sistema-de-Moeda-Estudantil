@@ -2,7 +2,7 @@
 	let { data } = $props();
 </script>
 
-<div class="container mx-auto p-4">
+<div class=" p-4">
 	<div class="mb-8">
 		<h1 class="text-primary mb-2 text-3xl font-bold">Portal da Empresa</h1>
 		<p class="text-gray-600">Bem-vindo(a), {data.user.name || data.user.email}!</p>
@@ -10,7 +10,7 @@
 	</div>
 
 	<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-		<div class="card bg-base-100 shadow-lg">
+		<div class="card border border-base-200 bg-base-100 shadow-lg">
 			<div class="card-body">
 				<h2 class="card-title">Minhas Vantagens</h2>
 				<p>Cadastre e gerencie as vantagens oferecidas aos alunos.</p>
@@ -20,7 +20,7 @@
 			</div>
 		</div>
 
-		<div class="card bg-base-100 shadow-lg">
+		<div class="card border border-base-200 bg-base-100 shadow-lg">
 			<div class="card-body">
 				<h2 class="card-title">Histórico</h2>
 				<p>Visualize o histórico de resgates das suas vantagens.</p>

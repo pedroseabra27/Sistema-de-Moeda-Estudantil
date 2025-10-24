@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Loading from '$lib/client/components/Loading.svelte';
 	import { editarEmpresa, excluirEmpresa, listarEmpresas } from '$lib/client/controller/empresa.remote';
 	import { inserirVantagem, listarVantagensPorEmpresa, editarVantagem, excluirVantagem } from '$lib/client/controller/vantagem.remote';
 	import type { SelectEmpresa } from '$lib/server/db/empresa/schema';
@@ -182,16 +183,14 @@
 	};
 </script>
 
-<div class="container mx-auto p-4">
+<div class=" p-4">
 	<div class="mb-8">
 		<h1 class="text-primary mb-2 text-3xl font-bold">Gerenciamento de Empresas</h1>
 		<p class="text-gray-600">Visualize, edite e gerencie todas as empresas cadastradas no sistema.</p>
 	</div>
 
 	{#await listarEmpresas()}
-		<div class="flex min-h-[300px] items-center justify-center">
-			<div class="loading loading-spinner loading-lg text-primary"></div>
-		</div>
+		<Loading/>
 	{:then empresas}
 		<div class="bg-base-100 border-base-300 border rounded-lg p-6 shadow-lg" transition:fly={{ y: 20, duration: 300 }}>
 			<div class="mb-6 flex flex-col items-center justify-between gap-4 sm:flex-row">

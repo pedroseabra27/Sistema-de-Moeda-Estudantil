@@ -142,7 +142,7 @@
 	};
 </script>
 
-<div class="container mx-auto p-4">
+<div class=" p-4">
 	<div class="mb-8">
 		<h1 class="text-primary mb-2 text-3xl font-bold">Gerenciamento de Alunos</h1>
 		<p class="text-gray-600">Visualize, edite e gerencie todos os alunos cadastrados no sistema.</p>

@@ -2,6 +2,7 @@
 
 - Apresentação: [presentation-bnp-coin-production.up.railway.app](https://presentation-bnp-coin-production.up.railway.app/#/1)
 - GitHub apresentação: [APRESENTAÇÃO]([https://github.com/username/repository-name](https://github.com/brenin35/presentation-bnp-coin)).
+-  GitHub apresentação [![GitHub Repo](https://img.shields.io/badge/github-repo-blue.svg)](https://github.com/brenin35/presentation-bnp-coin)
 
 
 ## Descrição

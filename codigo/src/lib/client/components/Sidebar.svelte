@@ -42,7 +42,8 @@
 		{
 			icon: GraduationCap,
 			label: 'Professores',
-			href: '/admin/professor'
+			href: '/admin/professor',
+			disabled: true
 		}
 	]);
 

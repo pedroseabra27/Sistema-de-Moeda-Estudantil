@@ -1,5 +1,10 @@
 @import 'tailwindcss';
+@import '@fontsource/quantico';
+
 @plugin "daisyui" {
 	themes: corporate --default;
 }
 
+* {
+  font-family: 'Quantico', sans-serif;
+}

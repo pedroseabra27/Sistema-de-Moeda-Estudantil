@@ -5,6 +5,8 @@ import { transacaoT } from '$lib/server/db/transacao/schema';
 import { and, eq, sql } from 'drizzle-orm';
 import type { InferInsertModel } from 'drizzle-orm';
 import { vantagemT } from '../schema';
+import { transporter } from '$lib/server/mail';
+import { env } from '$env/dynamic/private';
 
 export type InsertTransacao = InferInsertModel<typeof transacaoT>;
 
@@ -28,10 +30,7 @@ export const transacaoModel = {
 	},
 	async listarResgatesPorAluno(id: number) {
 		return await db.query.transacaoT.findMany({
-			where: and(
-				eq(transacaoT.alunoId, id),
-				sql`LOWER(${transacaoT.motivo}) LIKE ${'resgate%'}`
-			),
+			where: and(eq(transacaoT.alunoId, id), sql`LOWER(${transacaoT.motivo}) LIKE ${'resgate%'}`),
 			orderBy: (t, { desc }) => [desc(t.data)]
 		});
 	},
@@ -64,6 +63,9 @@ export const transacaoModel = {
 		return await db.transaction(async (tx) => {
 			const aluno = await tx.query.alunoT.findFirst({
 				where: eq(alunoT.id, info.alunoId),
+				with: {
+					user: true
+				},
 				columns: { id: true, saldo: true }
 			});
 
@@ -76,9 +78,7 @@ export const transacaoModel = {
 				.set({
 					saldo: sql`${professorT.saldo} - ${info.valor}`
 				})
-				.where(
-					and(eq(professorT.id, info.professorId), sql`${professorT.saldo} >= ${info.valor}`)
-				)
+				.where(and(eq(professorT.id, info.professorId), sql`${professorT.saldo} >= ${info.valor}`))
 				.returning({ saldo: professorT.saldo });
 
 			if (!profAtualizado) {
@@ -100,6 +100,13 @@ export const transacaoModel = {
 				alunoId: aluno.id
 			};
 			await tx.insert(transacaoT).values(novaTransacao);
+
+			await transporter.sendMail({
+				from: `"Pedro" <${env.GMAIL_USER}>`,
+				to: `${aluno.user.email}`,
+				subject: 'recebimento de moedas',
+				text: ' seu merda vc recebeu isso de moedas melhore...'
+			});
 
 			return {
 				novoSaldoProfessor: profAtualizado.saldo,
@@ -152,5 +159,5 @@ export const transacaoModel = {
 				novoSaldo: aluno.saldo - valorVantagem
 			};
 		});
-	},
+	}
 };

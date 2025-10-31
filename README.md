@@ -1,5 +1,9 @@
 # Sistema de Moeda Estudantil 
 
+- Apresentação: presentation-bnp-coin-production.up.railway.app
+- GitHub apresentação: [repository on GitHub]([https://github.com/username/repository-name](https://github.com/brenin35/presentation-bnp-coin)).
+
+
 ## Descrição
 
 Esse projeto consiste no desenvolvimento de um sistema para incentivar o reconhecimento do mérito estudantil por meio de uma moeda virtual. 

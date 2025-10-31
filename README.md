@@ -1,6 +1,6 @@
 # Sistema de Moeda Estudantil 
 
-- Apresentação: [presentation-bnp-coin-production.up.railway.app](https://presentation-bnp-coin-production.up.railway.app/#/1)
+- Apresentação: [presentation-bnp-coin-production.up.railway.app](https://presentation-bnp-coin-production.up.railway.app)
 - GitHub apresentação [![GitHub Repo](https://img.shields.io/badge/github-repo-blue.svg)](https://github.com/brenin35/presentation-bnp-coin)
 
 

@@ -59,7 +59,7 @@
 				{:else}
 					<div class="mb-4 flex items-center justify-between">
 						<div class="text-sm">
-							Mostrando <span class="font-bold">{transacoes.length}</span> transação(ões)
+							Mostrando <span class="font-bold">{transacoes.length}</span> transações
 						</div>
 					</div>
 

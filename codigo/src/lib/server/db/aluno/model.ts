@@ -7,7 +7,8 @@ export const alunoModel = {
 		return await db.query.alunoT.findMany({
 			with: {
 				user: true
-			}
+			},
+			orderBy: (t, { desc }) => [desc(t.saldo)]
 		});
 	},
 	buscarPorId: async (id: SelectAluno['id']) => {

@@ -1,5 +1,7 @@
 import { integer, pgTable, serial, text } from 'drizzle-orm/pg-core';
 import { user } from '../auth-schema';
+import { relations } from 'drizzle-orm';
+import { transacaoT } from '../schema';
 
 export const professorT = pgTable('professor', {
 	cpf: text('cpf').notNull(),
@@ -9,6 +11,14 @@ export const professorT = pgTable('professor', {
 	userId: text('user_id')
 		.references(() => user.id)
 });
+
+export const professorRelations = relations(professorT, ({ many, one }) => ({
+	user: one(user, {
+		fields: [professorT.userId],
+		references: [user.id]
+	}),
+	transacoes: many(transacaoT)
+}));
 
 export type SelectProfessor = typeof professorT.$inferSelect;
 export type InsertProfessor = typeof professorT.$inferInsert;

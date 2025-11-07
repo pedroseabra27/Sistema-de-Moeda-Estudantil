@@ -60,7 +60,7 @@ export const transacaoModel = {
 			throw new Error('O valor da transferência deve ser positivo.');
 		}
 
-		return await db.transaction(async (tx) => {
+		const resultado = await db.transaction(async (tx) => {
 			const aluno = await tx.query.alunoT.findFirst({
 				where: eq(alunoT.id, info.alunoId),
 				with: {
@@ -80,6 +80,17 @@ export const transacaoModel = {
 				})
 				.where(and(eq(professorT.id, info.professorId), sql`${professorT.saldo} >= ${info.valor}`))
 				.returning({ saldo: professorT.saldo });
+
+			const profData = await tx.query.professorT.findFirst({
+				where: eq(professorT.id, info.professorId),
+				with: {
+					user: {
+						columns: {
+							email: true
+						}
+					}
+				}
+			});
 
 			if (!profAtualizado) {
 				throw new Error('Saldo insuficiente para realizar a transferência.');
@@ -101,18 +112,35 @@ export const transacaoModel = {
 			};
 			await tx.insert(transacaoT).values(novaTransacao);
 
-			await transporter.sendMail({
-				from: `"Pedro" <${env.GMAIL_USER}>`,
-				to: `${aluno.user.email}`,
-				subject: 'recebimento de moedas',
-				text: ' seu merda vc recebeu isso de moedas melhore...'
-			});
-
 			return {
 				novoSaldoProfessor: profAtualizado.saldo,
-				message: 'Transferência realizada com sucesso!'
+				alunoEmail: aluno.user.email,
+				professorEmail: profData?.user ? profData.user.email : ''
 			};
 		});
+
+		await transporter.sendMail({
+			from: `"BNP Coin" <${env.GMAIL_USER}>`,
+			to: resultado.alunoEmail,
+			subject: '💰 Você recebeu BNP Coins!',
+			text: `Parabéns! Você recebeu ${info.valor} BNP Coins. Motivo: ${info.motivo}`,
+			html: `<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f5f5f5;"><div style="background-color: #1e40af; color: white; padding: 20px; border-radius: 8px 8px 0 0; text-align: center;"><h1 style="margin: 0; font-size: 24px;">💰 BNP Coin</h1></div><div style="background-color: white; padding: 30px; border-radius: 0 0 8px 8px;"><h2 style="color: #1e40af; margin-top: 0;">Parabéns!</h2><p style="font-size: 16px; color: #333;">Você recebeu <strong style="color: #1e40af; font-size: 20px;">${info.valor} BNP Coins</strong></p><div style="background-color: #eff6ff; padding: 15px; border-left: 4px solid #1e40af; margin: 20px 0;"><p style="margin: 0; color: #1e40af;"><strong>Motivo:</strong> ${info.motivo}</p></div><p style="color: #666; font-size: 14px;">Continue se dedicando para ganhar mais moedas!</p></div></div>`
+		});
+
+		if (resultado.professorEmail) {
+			await transporter.sendMail({
+				from: `"BNP Coin" <${env.GMAIL_USER}>`,
+				to: resultado.professorEmail,
+				subject: '🔔 Transferência de BNP Coins Realizada',
+				text: `Você realizou uma transferência de ${info.valor} BNP Coins. Motivo: ${info.motivo}`,
+				html: `<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f5f5f5;"><div style="background-color: #1e40af; color: white; padding: 20px; border-radius: 8px 8px 0 0; text-align: center;"><h1 style="margin: 0; font-size: 24px;">💰 BNP Coin</h1></div><div style="background-color: white; padding: 30px; border-radius: 0 0 8px 8px;"><h2 style="color: #1e40af; margin-top: 0;">Transferência Realizada</h2><p style="font-size: 16px; color: #333;">Você transferiu <strong style="color: #1e40af; font-size: 20px;">${info.valor} BNP Coins</strong></p><div style="background-color: #eff6ff; padding: 15px; border-left: 4px solid #1e40af; margin: 20px 0;"><p style="margin: 0; color: #1e40af;"><strong>Motivo:</strong> ${info.motivo}</p></div><p style="color: #666; font-size: 14px;">Seu saldo atual: <strong>${resultado.novoSaldoProfessor} BNP Coins</strong></p></div></div>`
+			});
+		}
+
+		return {
+			novoSaldoProfessor: resultado.novoSaldoProfessor,
+			message: 'Transferência realizada com sucesso!'
+		};
 	},
 	async resgatarVantagem(alunoId: number, vantagemId: number) {
 		return await db.transaction(async (tx) => {

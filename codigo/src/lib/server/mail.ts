@@ -1,5 +1,5 @@
+import { env } from '$env/dynamic/private'
 import nodemailer from 'nodemailer'
-import { env } from 'process'
 
 export const transporter = nodemailer.createTransport({
     service: "gmail",

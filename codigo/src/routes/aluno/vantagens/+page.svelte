@@ -8,7 +8,7 @@
 	import { Gift, Coins, Info } from '@lucide/svelte';
 	import { toast } from 'svelte-sonner';
 	import VantagemCard from '$lib/client/components/VantagemCard.svelte';
-	import { invalidateAll } from '$app/navigation';
+	import { goto } from '$app/navigation';
 	import Loading from '$lib/client/components/Loading.svelte';
 
 	let { data } = $props();
@@ -50,9 +50,9 @@
 				alunoId,
 				vantagemId: selectedVantagem.id
 			});
-			await invalidateAll();
-			closeModal();
 			toast.success('Vantagem resgatada com sucesso!', { id: toastId });
+			closeModal();
+			await goto('/aluno/resgates');
 		} catch (error) {
 			toast.error('Erro ao resgatar vantagem', { id: toastId });
 		} finally {

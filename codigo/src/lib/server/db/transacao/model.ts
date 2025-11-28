@@ -7,6 +7,8 @@ import type { InferInsertModel } from 'drizzle-orm';
 import { vantagemResgatadaT, vantagemT } from '../schema';
 import { transporter } from '$lib/server/mail';
 import { env } from '$env/dynamic/private';
+import { transferToAlunoHtml, transferToProfessorHtml, resgateAlunoHtml, resgateEmpresaHtml } from '$lib/client/utils/emails';
+import QRCode from 'qrcode';
 
 export type InsertTransacao = InferInsertModel<typeof transacaoT>;
 
@@ -128,7 +130,7 @@ export const transacaoModel = {
 			to: resultado.alunoEmail,
 			subject: '💰 Você recebeu BNP Coins!',
 			text: `Parabéns! Você recebeu ${info.valor} BNP Coins. Motivo: ${info.motivo}`,
-			html: `<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f5f5f5;"><div style="background-color: #1e40af; color: white; padding: 20px; border-radius: 8px 8px 0 0; text-align: center;"><h1 style="margin: 0; font-size: 24px;">💰 BNP Coin</h1></div><div style="background-color: white; padding: 30px; border-radius: 0 0 8px 8px;"><h2 style="color: #1e40af; margin-top: 0;">Parabéns!</h2><p style="font-size: 16px; color: #333;">Você recebeu <strong style="color: #1e40af; font-size: 20px;">${info.valor} BNP Coins</strong></p><div style="background-color: #eff6ff; padding: 15px; border-left: 4px solid #1e40af; margin: 20px 0;"><p style="margin: 0; color: #1e40af;"><strong>Motivo:</strong> ${info.motivo}</p></div><p style="color: #666; font-size: 14px;">Continue se dedicando para ganhar mais moedas!</p></div></div>`
+					html: transferToAlunoHtml(info.valor, info.motivo)
 		});
 
 		if (resultado.professorEmail) {
@@ -137,7 +139,7 @@ export const transacaoModel = {
 				to: resultado.professorEmail,
 				subject: '🔔 Transferência de BNP Coins Realizada',
 				text: `Você realizou uma transferência de ${info.valor} BNP Coins. Motivo: ${info.motivo}`,
-				html: `<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f5f5f5;"><div style="background-color: #1e40af; color: white; padding: 20px; border-radius: 8px 8px 0 0; text-align: center;"><h1 style="margin: 0; font-size: 24px;">💰 BNP Coin</h1></div><div style="background-color: white; padding: 30px; border-radius: 0 0 8px 8px;"><h2 style="color: #1e40af; margin-top: 0;">Transferência Realizada</h2><p style="font-size: 16px; color: #333;">Você transferiu <strong style="color: #1e40af; font-size: 20px;">${info.valor} BNP Coins</strong></p><div style="background-color: #eff6ff; padding: 15px; border-left: 4px solid #1e40af; margin: 20px 0;"><p style="margin: 0; color: #1e40af;"><strong>Motivo:</strong> ${info.motivo}</p></div><p style="color: #666; font-size: 14px;">Seu saldo atual: <strong>${resultado.novoSaldoProfessor} BNP Coins</strong></p></div></div>`
+						html: transferToProfessorHtml(info.valor, info.motivo, resultado.novoSaldoProfessor)
 			});
 		}
 
@@ -149,7 +151,10 @@ export const transacaoModel = {
 	async resgatarVantagem(alunoId: number, vantagemId: number) {
 		return await db.transaction(async (tx) => {
 			const aluno = await tx.query.alunoT.findFirst({
-				where: eq(alunoT.id, alunoId)
+				where: eq(alunoT.id, alunoId),
+				with: {
+					user: true
+				}
 			});
 
 			if (!aluno) {
@@ -157,7 +162,18 @@ export const transacaoModel = {
 			}
 
 			const vantagem = await tx.query.vantagemT.findFirst({
-				where: eq(vantagemT.id, vantagemId)
+				where: eq(vantagemT.id, vantagemId),
+				with: {
+					empresa: {
+						with: {
+							user: {
+								columns: {
+									email: true
+								}
+							}
+						}
+					}
+				}
 			});
 
 			if (!vantagem) {
@@ -187,11 +203,49 @@ export const transacaoModel = {
 
 			const [transacaoInserida] = await tx.insert(transacaoT).values(novaTransacao).returning();
 
-			await tx.insert(vantagemResgatadaT).values({
+			const [resgate] = await tx.insert(vantagemResgatadaT).values({
 				aluno_id: alunoId,
 				vantagem_id: vantagemId,
-				transacao_id: transacaoInserida.id
-			})
+				transacao_id: transacaoInserida.id,
+				codigo_resgate: crypto.randomUUID()
+			}).returning()
+
+			const qrCodeBuffer = await QRCode.toBuffer(resgate.codigo_resgate, {
+				width: 200,
+				margin: 2,
+				color: {
+					dark: '#000000',
+					light: '#FFFFFF'
+				}
+			});
+
+			await transporter.sendMail({
+				from: `"BNP Coin" <${env.GMAIL_USER}>`,
+				to: aluno.user.email,
+				subject: '🎉 Resgate de Vantagem Realizado!',
+				text: `Resgate realizado com sucesso! Código de resgate: ${resgate.codigo_resgate}`,
+				html: resgateAlunoHtml(vantagem.descricao, valorVantagem, resgate.codigo_resgate),
+				attachments: [
+					{
+						filename: 'qrcode.png',
+						content: qrCodeBuffer,
+						cid: 'qrcode'
+					}
+				]
+			});
+
+
+			if (!vantagem.empresa.user) {
+				throw new Error('Empresa vinculada à vantagem não possui um usuário associado.');
+			}
+
+			await transporter.sendMail({
+				from: `"BNP Coin" <${env.GMAIL_USER}>`,
+				to: vantagem.empresa.user.email,
+				subject: '📦 Vantagem Resgatada - Ação Necessária',
+				text: `Uma vantagem foi resgatada! Código de resgate: ${resgate.codigo_resgate}`,
+				html: resgateEmpresaHtml(vantagem.descricao, valorVantagem, resgate.codigo_resgate)
+			});
 
 			return {
 				message: 'Vantagem resgatada com sucesso!',

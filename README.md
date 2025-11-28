@@ -152,10 +152,13 @@ Crie um arquivo **`.env`** na raiz do projeto com as seguintes configurações (
 # Conexão com o Banco de Dados (PostgreSQL)
 DATABASE_URL="postgresql://postgres:senha@localhost:5432/moeda_estudantil"
 
+# Configurações para autenticação
+BETTER_AUTH_SECRET=Dtnj1ZVjviJ76mmvraQhD3jk2IMYIQuP
+BETTER_AUTH_URL=http://localhost:5173
+
 # Configurações de E-mail (Exemplo para envio de notificações)
-EMAIL_HOST="smtp.exemplo.com"
-EMAIL_USER="seu_email"
-EMAIL_PASS="sua_senha"
+GMAIL_USER="seuemail@gmail.com"
+GMAIL_PASSWORD="aaaa bbbb cccc dddd"
 ```
 
 ### Como Executar a Aplicação
@@ -164,6 +167,7 @@ EMAIL_PASS="sua_senha"
 2. Instalar dependências
    - `cd codigo`
    - `npm install`
+3. Configurar variaves de ambiente (Criar postgres local ou já hospedado, e criar senha de app no gmail)
 3. Ambiente de desenvolvimento
    - `npm run dev`
 

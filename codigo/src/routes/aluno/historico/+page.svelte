@@ -5,24 +5,9 @@
 	} from '$lib/client/controller/transacao.remote';
 	import { X } from '@lucide/svelte';
 	import type { PageProps } from './$types';
-	import { formatCurrency } from '$lib/client/utils';
+	import { formatCurrency, formatDate } from '$lib/client/utils';
 
 	let { data }: PageProps = $props();
-
-	let searchTerm: string = $state('');
-	let sortBy: 'data' | 'valor' = $state('data');
-	let sortOrder: 'asc' | 'desc' = $state('desc');
-
-	function formatDate(date: Date): string {
-		return new Date(date).toLocaleDateString('pt-BR', {
-			day: '2-digit',
-			month: '2-digit',
-			year: 'numeric',
-			hour: '2-digit',
-			minute: '2-digit'
-		});
-	}
-
 </script>
 
 <div class="min-h-screenp-4 md:p-6">
@@ -33,7 +18,7 @@
 		</div>
 	</div>
 
-	<div class="card border border-base-200 bg-base-100 shadow-md">
+	<div class="card border-base-200 bg-base-100 border shadow-md">
 		<div class="card-body">
 			{#await listarTransacoesPorAluno(data.aluno.id)}
 				<div class="flex items-center justify-center py-12">
@@ -84,9 +69,19 @@
 										<td class="font-medium">{transacao.id.slice(0, 8)}...</td>
 										<td>{formatDate(transacao.data)}</td>
 										<td>
-											<p class="badge badge-success">
-												{formatCurrency(transacao.valor)}
-											</p>
+											{#if transacao.valor > 0}
+												<p class="badge badge-success">
+													{formatCurrency(transacao.valor)}
+												</p>
+											{:else if transacao.valor < 0}
+												<p class="badge badge-error">
+													{formatCurrency(transacao.valor)}
+												</p>
+											{:else}
+												<p class="badge badge-neutral">
+													{formatCurrency(transacao.valor)}
+												</p>
+											{/if}
 										</td>
 										<td>{transacao.motivo}</td>
 									</tr>

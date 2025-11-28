@@ -2,16 +2,12 @@
 	import Loading from '$lib/client/components/Loading.svelte';
 	import { listarResgatesAluno } from '$lib/client/controller/transacao.remote';
 	import { formatDate } from '$lib/client/utils';
+	import { base64ToImageUrl } from '$lib/client/utils/image';
 	import { Gift, Calendar, Coins, Package, AlertTriangle } from '@lucide/svelte';
 
 	let { data } = $props();
 
 	let alunoId = $derived(data.aluno.id);
-
-	function extrairDescricaoVantagem(motivo: string): string {
-		// Remove "Resgate de vantagem: " do início
-		return motivo.replace(/^Resgate de vantagem:\s*/i, '');
-	}
 </script>
 
 <div class="p-4">
@@ -24,43 +20,41 @@
 				<h1 class="text-primary mb-2 text-3xl font-bold">Minhas Vantagens Resgatadas</h1>
 				<p class="text-gray-600">Veja todas as vantagens que você já resgatou.</p>
 			</div>
-			<div class="stats shadow">
-				<div class="stat">
-					<div class="stat-figure text-primary">
+			<div class="stats bg-primary shadow">
+				<div class="stat text-white ">
+					<div class="stat-figure ">
 						<Package class="h-8 w-8" />
 					</div>
-					<div class="stat-title">Total de Resgates</div>
-					<div class="stat-value text-primary">{resgates.length}</div>
-					<div class="stat-desc">{totalGasto} moedas gastas</div>
+					<div class="stat-title text-white">Total de Resgates</div>
+					<div class="stat-value y">{resgates.length}</div>
+					<div class="stat-desc text-white">{totalGasto} moedas gastas</div>
 				</div>
 			</div>
 		</div>
-		<div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+		<div class="{resgates.length > 0 ? 'grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4' : ''}">
 			{#each resgates as resgate}
 				<div
-					class="card border-base-200 bg-base-100 border shadow-lg transition-shadow hover:shadow-xl"
+					class="card border-base-300 bg-base-100 border shadow-lg transition-shadow hover:shadow-xl overflow-hidden"
 				>
-					<div class="card-body">
-						<div class="mb-3 flex items-start justify-between">
-							<div class="bg-primary/10 rounded-full p-3">
-								<Gift class="text-primary h-6 w-6" />
-							</div>
-							<div class="badge badge-error badge-lg">
-								-{resgate.transacao.valor}
-								<Coins class="ml-1 h-4 w-4" />
-							</div>
-						</div>
+					<figure class="w-full h-60 bg-base-200 overflow-hidden">
+						<img 
+							src={base64ToImageUrl(resgate.vantagem.image)} 
+							alt={resgate.vantagem.descricao}
+							class="w-full h-full object-cover"
+						/>
+					</figure>
 
+					<div class="card-body">
 						<h3 class="card-title mb-2 text-base">
-							{extrairDescricaoVantagem(resgate.transacao.motivo)}
+							{resgate.vantagem.descricao}
 						</h3>
 
-						<div class="mb-4 flex items-center gap-2 text-sm text-gray-500">
+						<div class="flex items-center gap-2 text-sm text-gray-500">
 							<Calendar class="h-4 w-4" />
 							<span>{formatDate(resgate.resgatada_em)}</span>
 						</div>
 
-						<div class="divider my-2"></div>
+						<div class="divider my-0"></div>
 
 						<div class="space-y-1 text-sm">
 							<div class="flex justify-between">

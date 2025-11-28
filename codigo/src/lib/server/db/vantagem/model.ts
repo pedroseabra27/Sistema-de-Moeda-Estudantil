@@ -6,7 +6,15 @@ export const vantagemModel = {
 	listar: async () => {
 		return await db.query.vantagemT.findMany({
 			with: {
-				empresa: true
+				empresa: {
+					with: {
+						user: {
+							columns: {
+								name: true
+							}
+						}
+					}
+				}
 			}
 		});
 	},

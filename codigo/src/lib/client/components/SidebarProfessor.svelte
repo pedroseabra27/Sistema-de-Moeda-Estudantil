@@ -13,6 +13,7 @@
 		History
 	} from '@lucide/svelte';
 	import { page } from '$app/state';
+	import logoUrl from '$lib/client/assets/logo.png';
 	import { authClient } from '$lib/client/auth-client';
 	import { goto } from '$app/navigation';
 
@@ -71,9 +72,10 @@
 	]}
 >
 	<div class="border-base-200 border-b p-4">
-		<div class="flex items-center">
-			<span class="mx-3 text-lg font-bold text-[var(--sidebar-foreground)]">Sistema de Moeda</span>
-		</div>
+	    <a href="/professor" class="flex items-center gap-3 no-underline">
+		    <img src={logoUrl} alt="BNP Coin" class="h-10 w-10 logo-coin" />
+		    <span class="mx-3 text-lg font-bold text-[var(--sidebar-foreground)]">Sistema de Moeda</span>
+	    </a>
 	</div>
 
 	<nav class="flex-1 p-4">

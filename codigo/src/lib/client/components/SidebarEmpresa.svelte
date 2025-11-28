@@ -8,6 +8,7 @@
 		History
 	} from '@lucide/svelte';
 	import { page } from '$app/state';
+	import logoUrl from '$lib/client/assets/logo.png';
 	import { authClient } from '$lib/client/auth-client';
 	import { goto } from '$app/navigation';
 
@@ -66,9 +67,10 @@
 		: '-translate-x-full md:translate-x-0'}"
 >
 	<div class="border-base-200 border-b p-4">
-		<div class="flex items-center">
+		<a href="/empresa" class="flex items-center gap-3 no-underline">
+			<img src={logoUrl} alt="BNP Coin" class="h-10 w-10 logo-coin" />
 			<span class="mx-3 text-lg font-bold">Portal Empresa</span>
-		</div>
+		</a>
 	</div>
 
 	<nav class="flex-1 p-4">

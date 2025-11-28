@@ -25,6 +25,7 @@ export const vantagemResgatadaT = pgTable('vantagem_resgatada', {
 	vantagem_id: integer('vantagem_id').references(() => vantagemT.id).notNull(),
 	aluno_id: integer('aluno_id').references(() => alunoT.id).notNull(),
 	transacao_id: text('transacao_id').references(() => transacaoT.id).notNull(),
+	codigo_resgate: text('codigo_resgate').notNull(),
 	resgatada_em: timestamp('resgatada_em').notNull().defaultNow()
 });
 

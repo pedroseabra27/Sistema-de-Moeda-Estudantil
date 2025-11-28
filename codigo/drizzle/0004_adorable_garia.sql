@@ -1,0 +1,1 @@
+ALTER TABLE "vantagem_resgatada" ADD COLUMN "codigo_resgate" text NOT NULL;

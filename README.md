@@ -57,7 +57,7 @@
 ---
 
 ## 🔗 Links Úteis
-* 🌐 **Demo Online:** [Acesse a Aplicação (Railway)](https://presentation-bnp-coin-production.up.railway.app)
+* 🌐 **Demo Online:** [Acesse a Aplicação (Railway)](https://sistema-de-moeda-estudantil-production.up.railway.app/login)
   > 💻 **Descrição:** Link para a aplicação rodando em ambiente de produção na Railway.
 * 📂 **Repositório:** [GitHub Repo](https://github.com/pedroseabra27/Sistema-de-Moeda-Estudantil)
   > 📦 **Descrição:** Código fonte completo do projeto.

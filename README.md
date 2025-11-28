@@ -51,15 +51,8 @@
 - [Instalação e Execução](#-instalação-e-execução)
   - [Pré-requisitos](#pré-requisitos)
   - [Variáveis de Ambiente](#-variáveis-de-ambiente)
-  - [Instalação de Dependências](#-instalação-de-dependências)
-  - [Inicialização do Banco de Dados](#-inicialização-do-banco-de-dados)
   - [Como Executar a Aplicação](#como-executar-a-aplicação)
-- [Deploy](#-deploy)
 - [Estrutura de Pastas](#-estrutura-de-pastas)
-- [Demonstração](#-demonstração)
-- [Autores](#-autores)
-- [Agradecimentos](#-agradecimentos)
-- [Licença](#-licença)
 
 ---
 
@@ -164,9 +157,30 @@ EMAIL_HOST="smtp.exemplo.com"
 EMAIL_USER="seu_email"
 EMAIL_PASS="sua_senha"
 ```
+
+### Como Executar a Aplicação
+
 1. Clonar o repositório
 2. Instalar dependências
    - `cd codigo`
    - `npm install`
 3. Ambiente de desenvolvimento
    - `npm run dev`
+
+### Estrutura de Pastas
+
+   ```
+src/
+  app.html
+  app.css
+  routes/
+    /(auth)
+      /login ← Realizar login
+      /signup ← Realizar cadastro
+      /admin
+         /alunos ← Rota pra administrador gerenciar os alunos
+         /empresas ← Rota pra administrador gerenciar as empresas
+         /professor ← Rota pra administrador gerenciar os professores
+  lib/
+
+```

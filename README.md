@@ -26,7 +26,7 @@
 
 ## 🚧 Apresentação do Projeto
 
-[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/brenin35/presentation-bnp-coin/main.yml?branch=main)](presentation-bnp-coin-production.up.railway.app)
+[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/brenin35/presentation-bnp-coin/main.yml?branch=main)](https://github.com/brenin35/presentation-bnp-coin/actions)
 [![Versão](https://img.shields.io/badge/Versão-v1.0.0-blue)](https://github.com/pedroseabra27/Sistema-de-Moeda-Estudantil)
 [![Licença](https://img.shields.io/github/license/brenin35/presentation-bnp-coin)](#licença)
 

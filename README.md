@@ -130,7 +130,6 @@ O sistema segue o padrão **MVC (Model-View-Controller)** adaptado para a arquit
 | **Modelo ER** | 
 | <img width="1800" height="1140" alt="diagramaER (1)" src="https://github.com/user-attachments/assets/697b74f8-bb3e-4da5-9256-6d8f64864dd1" /> | 
 | Diagrama de Componentes | 
-| :---: | 
 | **Visão Geral** | 
 | <img width="2560" height="4160" alt="diagramaDeComponentes" src="https://github.com/user-attachments/assets/0b6cc273-7926-45d9-a478-6e343d30f6d6" /> | 
 

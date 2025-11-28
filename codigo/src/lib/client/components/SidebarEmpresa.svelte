@@ -102,33 +102,27 @@
 		</div>
 	</div>
 </aside>
-
 {#snippet button(item: SidebarItem)}
-	{#if item.href}
+	{#if item.disabled}
+		<div
+			class="text-base-content flex cursor-not-allowed items-center gap-3 rounded-lg px-4 py-2 opacity-50"
+			aria-disabled="true"
+		>
+			<item.icon class="h-4 w-4" />
+			<span class="text-md font-medium">{item.label}</span>
+		</div>
+	{:else}
 		<a
 			href={item.href}
-			class="hover:bg-base-200 text-base-content flex w-full items-center rounded-lg p-3 transition-colors {currentPath ===
-			item.href
-				? 'bg-primary text-primary-content'
-				: ''} {item.disabled ? 'pointer-events-none opacity-50' : ''}"
+			class={[
+				'flex items-center gap-3 rounded-lg px-4 py-2 transition-colors',
+				currentPath === item.href
+					? 'bg-primary text-primary-content'
+					: 'text-base-content hover:bg-base-200'
+			]}
 		>
-			<svelte:component this={item.icon} class="h-5 w-5" />
-			<span class="ml-3 text-sm font-medium">{item.label}</span>
+			<item.icon class="h-4 w-4" />
+			<span class="text-md font-medium">{item.label}</span>
 		</a>
-	{:else}
-		<button
-			type="button"
-			class="hover:bg-base-200 text-base-content flex w-full items-center rounded-lg p-3 transition-colors"
-			onclick={async () => {
-				if (item.label === 'Sair') {
-					await authClient.signOut();
-					goto('/login');
-				}
-			}}
-		>
-			<svelte:component this={item.icon} class="h-5 w-5" />
-			<span class="ml-3 text-sm font-medium">{item.label}</span>
-		</button>
 	{/if}
 {/snippet}
-

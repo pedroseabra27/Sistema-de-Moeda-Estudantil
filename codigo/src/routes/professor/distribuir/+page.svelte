@@ -8,9 +8,10 @@
 		type AlunoWithUser
 	} from '$lib/client/controller/professor.remote';
 	import type { PageData } from './$types';
-	import { Info, X } from '@lucide/svelte';
+	import { Info, X, Coins, Send } from '@lucide/svelte';
 	import { formatCPF, formatCurrency } from '$lib/client/utils';
 	import { invalidateAll } from '$app/navigation';
+	import SuccessConfetti from '$lib/client/components/SuccessConfetti.svelte';
 
 	let { data }: { data: PageData } = $props();
 
@@ -19,6 +20,7 @@
 	let quantidade: number = $state(1);
 	let motivo: string = $state('');
 	let searchTerm: string = $state('');
+	let showConfetti = $state(false);
 
 	let isModalOpen: HTMLDialogElement | null = $state(null);
 
@@ -65,7 +67,8 @@
 			});
 
 			await invalidateAll();
-			toast.success('Moedas enviadas com sucesso!', { id: toastId });
+			showConfetti = true;
+			toast.success('🎉 Moedas enviadas com sucesso!', { id: toastId });
 			closeModal();
 		} catch (error: any) {
 			toast.error(error.message || 'Falha ao enviar moedas', { id: toastId });
@@ -83,17 +86,25 @@
 	}
 </script>
 
-<div class=" min-h-screen p-4 md:p-6">
-	<div class="mb-8 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
+<SuccessConfetti trigger={showConfetti} />
+
+<div class="min-h-screen p-4 md:p-6">
+	<div class="mb-8 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center animate-slide-in-up">
 		<div class="flex w-full items-center justify-between">
 			<div>
-				<h1 class="card-title text-3xl text-primary">Distribuição de Moedas</h1>
+				<h1 class="card-title text-3xl text-primary flex items-center gap-2">
+					<Coins class="h-8 w-8 text-yellow-400 animate-wiggle" />
+					Distribuição de Moedas
+				</h1>
 				<p class="mt-2 opacity-90">Professor: {data.professor.cpf}</p>
 				<p class="text-sm opacity-80">Departamento: {data.professor.departamento}</p>
 			</div>
-			<div class="stats bg-secondary text-primary-content shadow">
+			<div class="stats bg-gradient-to-br from-secondary to-primary text-primary-content shadow-lg animate-bounce-in">
 				<div class="stat">
-					<div class="stat-title text-primary-content opacity-80">Saldo Disponível</div>
+					<div class="stat-title text-primary-content opacity-80 flex items-center gap-1">
+						<Coins class="w-4 h-4" />
+						Saldo Disponível
+					</div>
 					<div class="stat-value">{data.professor.saldo}</div>
 					<div class="stat-desc text-primary-content opacity-80">moedas</div>
 				</div>
@@ -155,8 +166,9 @@
 										<button
 											type="button"
 											onclick={() => openModal(aluno)}
-											class="btn btn-primary btn-sm"
+											class="btn btn-primary btn-sm btn-gamified"
 										>
+											<Send class="w-4 h-4" />
 											Enviar Moedas
 										</button>
 									</td>

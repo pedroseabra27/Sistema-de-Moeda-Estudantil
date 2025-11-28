@@ -10,7 +10,7 @@
 	</div>
 
 	<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 mb-8">
-		<div class="card border border-base-300 bg-gradient-to-br from-primary to-primary-focus text-primary-content shadow-lg hover:shadow-xl transition-shadow">
+		<div class="card border border-base-300 bg-gradient-to-br from-primary to-primary/50 text-primary-content shadow-lg hover:shadow-xl transition-shadow">
 			<div class="card-body">
 				<h2 class="card-title text-lg">Saldo Disponível</h2>
 				<p class="text-4xl font-bold">{data.aluno.saldo}</p>

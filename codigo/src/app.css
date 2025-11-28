@@ -2,9 +2,251 @@
 @import '@fontsource/quantico';
 
 @plugin "daisyui" {
-	themes: corporate --default;
+	themes: amazonas --default;
 }
 
 * {
   font-family: 'Quantico', sans-serif;
+}
+
+@plugin "daisyui/theme" {
+	name: 'amazonas';
+	default: true;
+	prefersdark: false;
+	color-scheme: 'light';
+	--color-base-100: oklch(100% 0 0);
+	--color-base-200: oklch(88% 0 0);
+	--color-base-300: oklch(78% 0 0);
+	--color-base-content: oklch(22.389% 0.031 278.072);
+	--color-primary: oklch(64% 0.222 41.116);
+	--color-primary-content: oklch(100% 0 0);
+	--color-secondary: oklch(76% 0.188 70.08);
+	--color-secondary-content: oklch(28% 0.066 53.813);
+	--color-accent: oklch(60% 0.118 184.704);
+	--color-accent-content: oklch(100% 0 0);
+	--color-neutral: oklch(0% 0 0);
+	--color-neutral-content: oklch(100% 0 0);
+	--color-info: oklch(60% 0.126 221.723);
+	--color-info-content: oklch(100% 0 0);
+	--color-success: oklch(62% 0.194 149.214);
+	--color-success-content: oklch(100% 0 0);
+	--color-warning: oklch(85% 0.199 91.936);
+	--color-warning-content: oklch(0% 0 0);
+	--color-error: oklch(70% 0.191 22.216);
+	--color-error-content: oklch(0% 0 0);
+  --radius-selector: 0.25rem;
+  --radius-field: 0.25rem;
+  --radius-box: 0.25rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 2px;
+  --depth: 0.5;
+  --noise: 1;
+}
+
+/* Gamified Animations */
+@keyframes slideInUp {
+	from {
+		opacity: 0;
+		transform: translateY(30px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes slideInRight {
+	from {
+		opacity: 0;
+		transform: translateX(-30px);
+	}
+	to {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}
+
+@keyframes scaleIn {
+	from {
+		opacity: 0;
+		transform: scale(0.9);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1);
+	}
+}
+
+@keyframes pulse-glow {
+	0%, 100% {
+		box-shadow: 0 0 10px rgba(251, 191, 36, 0.4);
+	}
+	50% {
+		box-shadow: 0 0 20px rgba(251, 191, 36, 0.8);
+	}
+}
+
+@keyframes shine {
+	0% {
+		background-position: -200% center;
+	}
+	100% {
+		background-position: 200% center;
+	}
+}
+
+@keyframes bounce-in {
+	0% {
+		opacity: 0;
+		transform: scale(0.3);
+	}
+	50% {
+		transform: scale(1.05);
+	}
+	70% {
+		transform: scale(0.9);
+	}
+	100% {
+		opacity: 1;
+		transform: scale(1);
+	}
+}
+
+@keyframes wiggle {
+	0%, 100% {
+		transform: rotate(0deg);
+	}
+	25% {
+		transform: rotate(-3deg);
+	}
+	75% {
+		transform: rotate(3deg);
+	}
+}
+
+/* Gamified utility classes */
+.card-hover-lift {
+	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-hover-lift:hover {
+	transform: translateY(-4px) scale(1.01);
+}
+
+.card-shine {
+	position: relative;
+	overflow: hidden;
+}
+
+.card-shine::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: -200%;
+	width: 200%;
+	height: 100%;
+	background: linear-gradient(
+		90deg,
+		transparent,
+		rgba(255, 255, 255, 0.3),
+		transparent
+	);
+	transition: left 0.5s;
+}
+
+.card-shine:hover::before {
+	left: 200%;
+}
+
+.coin-badge {
+	background: var(--color-primary);
+	animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.btn-gamified {
+	position: relative;
+	overflow: hidden;
+	transition: all 0.3s ease;
+}
+
+.btn-gamified:hover {
+	transform: scale(1.05);
+}
+
+.btn-gamified::after {
+	content: '';
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 0;
+	height: 0;
+	border-radius: 50%;
+	background: rgba(255, 255, 255, 0.3);
+	transform: translate(-50%, -50%);
+	transition: width 0.6s, height 0.6s;
+}
+
+.btn-gamified:hover::after {
+	width: 300px;
+	height: 300px;
+}
+
+.animate-slide-in-up {
+	animation: slideInUp 0.5s ease-out;
+}
+
+.animate-slide-in-right {
+	animation: slideInRight 0.5s ease-out;
+}
+
+.animate-scale-in {
+	animation: scaleIn 0.4s ease-out;
+}
+
+.animate-bounce-in {
+	animation: bounce-in 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.animate-wiggle {
+	animation: wiggle 0.5s ease-in-out;
+}
+
+/* Stagger animation delays for lists */
+.stagger-item {
+	opacity: 0;
+	animation: slideInUp 0.5s ease-out forwards;
+}
+
+.stagger-item:nth-child(1) { animation-delay: 0.05s; }
+.stagger-item:nth-child(2) { animation-delay: 0.1s; }
+.stagger-item:nth-child(3) { animation-delay: 0.15s; }
+.stagger-item:nth-child(4) { animation-delay: 0.2s; }
+.stagger-item:nth-child(5) { animation-delay: 0.25s; }
+.stagger-item:nth-child(6) { animation-delay: 0.3s; }
+.stagger-item:nth-child(7) { animation-delay: 0.35s; }
+.stagger-item:nth-child(8) { animation-delay: 0.4s; }
+
+/* Glow effects */
+.glow-gold {
+	box-shadow: 0 0 15px rgba(251, 191, 36, 0.5);
+}
+
+.glow-green {
+	box-shadow: 0 0 15px rgba(52, 211, 153, 0.5);
+}
+
+.glow-blue {
+	box-shadow: 0 0 15px rgba(96, 165, 250, 0.5);
+}
+
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+	}
 }

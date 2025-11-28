@@ -40,29 +40,31 @@
 		<Loading />
 	{:then resgates}
 		{@const totalGasto = resgates.reduce((sum, r) => sum + r.transacao.valor, 0)}
-		<div class="mb-8 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
+		<div class="mb-8 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center animate-slide-in-up">
 			<div>
-				<h1 class="text-primary mb-2 text-3xl font-bold">Minhas Vantagens Resgatadas</h1>
+				<h1 class="text-primary mb-2 text-3xl font-bold flex items-center gap-2">
+					Minhas Vantagens Resgatadas
+				</h1>
 				<p class="text-gray-600">Veja todas as vantagens que você já resgatou.</p>
 			</div>
-			<div class="stats bg-primary shadow">
+			<div class="stats bg-gradient-to-br from-primary to-primary/50 shadow-lg animate-bounce-in">
 				<div class="stat text-white">
 					<div class="stat-figure">
-						<Package class="h-8 w-8" />
+						<Package class="h-8 w-8 animate-wiggle" />
 					</div>
 					<div class="stat-title text-white">Total de Resgates</div>
-					<div class="stat-value y">{resgates.length}</div>
+					<div class="stat-value">{resgates.length}</div>
 					<div class="stat-desc text-white">{totalGasto} moedas gastas</div>
 				</div>
 			</div>
 		</div>
 		<div class={resgates.length > 0 ? 'grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4' : ''}>
-			{#each resgates as resgate}
+			{#each resgates as resgate, i}
 				<div
-					class="card border-base-300 bg-base-100 overflow-hidden border shadow-lg transition-shadow hover:shadow-xl"
+					class="card border-base-300 bg-base-100 overflow-hidden border shadow-lg card-hover-lift card-shine stagger-item"
 				>
-					<div class="absolute right-2 top-2 flex flex-col items-end">
-						<button class="btn btn-xs btn-primary" onclick={() => openCodigoModal(resgate)}
+					<div class="absolute right-2 top-2 flex flex-col items-end z-10">
+						<button class="btn btn-xs btn-primary btn-gamified " onclick={() => openCodigoModal(resgate)}
 							><Eye class="h-4 w-4" />Ver código</button
 						>
 					</div>
@@ -70,7 +72,7 @@
 						<img
 							src={base64ToImageUrl(resgate.vantagem.image)}
 							alt={resgate.vantagem.descricao}
-							class="h-full w-full object-cover"
+							class="h-full w-full object-cover transition-transform duration-500 hover:scale-110"
 						/>
 					</figure>
 
@@ -99,13 +101,13 @@
 					</div>
 				</div>
 			{:else}
-				<div class="text-center py-12">
-					<Gift class="w-16 h-16 mx-auto text-gray-300 mb-4" />
+				<div class="text-center py-12 animate-scale-in">
+					<Gift class="w-16 h-16 mx-auto text-gray-300 mb-4 animate-wiggle" />
 					<p class="text-gray-500 text-lg mb-2">Você ainda não resgatou nenhuma vantagem</p>
 					<p class="text-gray-400 text-sm mb-6">
 						Visite a página de vantagens para trocar suas moedas por benefícios exclusivos.
 					</p>
-					<a href="/aluno/vantagens" class="btn btn-primary">
+					<a href="/aluno/vantagens" class="btn btn-primary btn-gamified">
 						<Gift class="w-5 h-5" />
 						Ver Vantagens Disponíveis
 					</a>
@@ -117,35 +119,37 @@
 </div>
 
 <dialog bind:this={isModalCodigo} class="modal" onclose={() => { selectedVantagem = null; qrDataUrl = null }}>
-	<div class="modal-box">
+	<div class="modal-box animate-scale-in">
 		<form method="dialog">
 			<button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
 		</form>
 		{#if selectedVantagem}
-			<h3 class="mb-4 text-lg font-bold">Código de Resgate</h3>
+			<h3 class="mb-4 text-lg font-bold flex items-center gap-2">
+				Código de Resgate
+			</h3>
 
 			<p class="text-base-content mb-4">
 				Aqui está o código para a vantagem resgatada. Apresente este código para resgatar seu
 				benefício.
 			</p>
 
-			<div class="alert alert-info mb-4">
+			<div class="alert alert-info mb-4 animate-slide-in-right">
 				<Info class="h-6 w-6 shrink-0 stroke-current" />
 				<span class="text-sm">Guarde este código com segurança.</span>
 			</div>
 
 			{#if qrDataUrl}
-				<div class="flex items-center justify-center mb-4">
-					<img src={qrDataUrl} alt="QR Code de Resgate" class="h-48 w-48 rounded-md border p-1" />
+				<div class="flex items-center justify-center mb-4 animate-bounce-in">
+					<img src={qrDataUrl} alt="QR Code de Resgate" class="h-48 w-48 rounded-md border-2 border-primary p-2" />
 				</div>
 			{:else}
 				<div class="flex items-center justify-center mb-4">
-					<span class="text-sm text-gray-500">Gerando QR Code...</span>
+					<span class="loading loading-spinner loading-md text-primary"></span>
 				</div>
 			{/if}
 
 			<div
-				class="flex items-center justify-center rounded-md border bg-gray-100 p-4 font-mono text-lg"
+				class="flex items-center justify-center rounded-md border-2 border-primary bg-gradient-to-br from-base-200 to-base-300 p-4 font-mono text-lg "
 			>
 				{selectedVantagem.codigo_resgate}
 			</div>

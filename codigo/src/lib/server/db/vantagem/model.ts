@@ -15,7 +15,8 @@ export const vantagemModel = {
 						}
 					}
 				}
-			}
+			},
+			orderBy: (v, { asc }) => [asc(v.valor)]
 		});
 	},
 	listarPorEmpresa: async (empresaId: number) => {

@@ -1,0 +1,752 @@
+{
+  "id": "abd76432-a8cb-4e2b-ab8f-ac31b4bbc80c",
+  "prevId": "2ef59890-3250-403c-bed7-00362db0d98d",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.account": {
+      "name": "account",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "account_id": {
+          "name": "account_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "provider_id": {
+          "name": "provider_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "access_token": {
+          "name": "access_token",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "refresh_token": {
+          "name": "refresh_token",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "id_token": {
+          "name": "id_token",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "access_token_expires_at": {
+          "name": "access_token_expires_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "refresh_token_expires_at": {
+          "name": "refresh_token_expires_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "scope": {
+          "name": "scope",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "password": {
+          "name": "password",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "account_user_id_user_id_fk": {
+          "name": "account_user_id_user_id_fk",
+          "tableFrom": "account",
+          "tableTo": "user",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.session": {
+      "name": "session",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "expires_at": {
+          "name": "expires_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "token": {
+          "name": "token",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "ip_address": {
+          "name": "ip_address",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "user_agent": {
+          "name": "user_agent",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "impersonated_by": {
+          "name": "impersonated_by",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "session_user_id_user_id_fk": {
+          "name": "session_user_id_user_id_fk",
+          "tableFrom": "session",
+          "tableTo": "user",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "session_token_unique": {
+          "name": "session_token_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "token"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.user": {
+      "name": "user",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "email": {
+          "name": "email",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "email_verified": {
+          "name": "email_verified",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "image": {
+          "name": "image",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "role": {
+          "name": "role",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "banned": {
+          "name": "banned",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": false
+        },
+        "ban_reason": {
+          "name": "ban_reason",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ban_expires": {
+          "name": "ban_expires",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "user_email_unique": {
+          "name": "user_email_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "email"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.verification": {
+      "name": "verification",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "identifier": {
+          "name": "identifier",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "value": {
+          "name": "value",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "expires_at": {
+          "name": "expires_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.alunoT": {
+      "name": "alunoT",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "cpf": {
+          "name": "cpf",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "endereco": {
+          "name": "endereco",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "curso": {
+          "name": "curso",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "saldo": {
+          "name": "saldo",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "alunoT_user_id_user_id_fk": {
+          "name": "alunoT_user_id_user_id_fk",
+          "tableFrom": "alunoT",
+          "tableTo": "user",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "alunoT_cpf_unique": {
+          "name": "alunoT_cpf_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "cpf"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.professor": {
+      "name": "professor",
+      "schema": "",
+      "columns": {
+        "cpf": {
+          "name": "cpf",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "departamento": {
+          "name": "departamento",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "saldo": {
+          "name": "saldo",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 1000
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "professor_user_id_user_id_fk": {
+          "name": "professor_user_id_user_id_fk",
+          "tableFrom": "professor",
+          "tableTo": "user",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.empresa": {
+      "name": "empresa",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "cnpj": {
+          "name": "cnpj",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "empresa_user_id_user_id_fk": {
+          "name": "empresa_user_id_user_id_fk",
+          "tableFrom": "empresa",
+          "tableTo": "user",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.vantagem_resgatada": {
+      "name": "vantagem_resgatada",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "vantagem_id": {
+          "name": "vantagem_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "aluno_id": {
+          "name": "aluno_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "transacao_id": {
+          "name": "transacao_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "resgatada_em": {
+          "name": "resgatada_em",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "vantagem_resgatada_vantagem_id_vantagem_id_fk": {
+          "name": "vantagem_resgatada_vantagem_id_vantagem_id_fk",
+          "tableFrom": "vantagem_resgatada",
+          "tableTo": "vantagem",
+          "columnsFrom": [
+            "vantagem_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "vantagem_resgatada_aluno_id_alunoT_id_fk": {
+          "name": "vantagem_resgatada_aluno_id_alunoT_id_fk",
+          "tableFrom": "vantagem_resgatada",
+          "tableTo": "alunoT",
+          "columnsFrom": [
+            "aluno_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "vantagem_resgatada_transacao_id_transacao_id_fk": {
+          "name": "vantagem_resgatada_transacao_id_transacao_id_fk",
+          "tableFrom": "vantagem_resgatada",
+          "tableTo": "transacao",
+          "columnsFrom": [
+            "transacao_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.vantagem": {
+      "name": "vantagem",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "descricao": {
+          "name": "descricao",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "valor": {
+          "name": "valor",
+          "type": "numeric(10, 2)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "image": {
+          "name": "image",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'data:image/png;base64,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Bx/M1n377bfplFNOSddee2364osv0kEHHZT5nd1c/qPrBnHAokWLEtpCX8v3xyUQWAGBf/75J11xxRXp2GOPTWussUbae++900477ZTefPPN5J6GuO6669LGG2+cdt1113Tuueem+++/P/njetFFF6XddtstqbGrr7463Xfffenff/9NJ598cjrnnHMsy8Zpp52WFbcv8+bNS88880zaaKONfF1h+KWOydhTu2pYLVv08MMPpyOPPDIdfvjhaZ111kmXXnpp1tQLFy50OxsdGyQkVYZT/OgSAcV46qmnTq72G/v9999P++67b1Z8/rEdkidfQGa9++672VfrfM++LPtBpShm45ZbbklPPfVUeuutt9Lrr7+enn322XTzzTcvW5XSDjvskCYmZi9ljPbKK6+k/fffP2211VbpyiuvzNjJYwJG2XrrrTMb+Q/y7p133sm/ptmtLr+t+8qWVMuPjksDEPj+++8z2XPJJZek+fPnp++++y7T+lNDo/3NmyN5sI7PhqL3HMGOZ5Lbb789nXnmmemMM85Id999d3LPurnGFltskQ444ID06quvZs21/vrrJzLPY8Lnn3+e/ve//6Wpf9Zcc830ww8/TE61bRBdi47QEnqa3BEfAoEuECBTPKAfd9xxiWyyBbsodp/zgWEUre+ufuP7bFAvfklrDt/Job///jutssoqWeOZ6zQ8w1xzzTUZw2AnLwHIPbJt42Uyz0O5Ws/t8Ief+fcZDcIp9BNvqXKI4torAh6wFyxYkB5//PHsGSPfT1qttNJKyVuufM7DurdPvpM3vvtsfPDBBxlL5L+gH3roobTqqqtmb7YeffRRSzoOzKHo84WtViv7iDm8hcVeal3Ne2Pm/NwfC1doEN0akgosMfpFwFujo48+Ot11113J69OpdhS3B+0777wzm1aY3iidd9552XcP7Pfee2/6448/su933HFHuuCCC5K3pX7TY6J77rkn3bfswZ2dbv513ZtuuimTZV999VX2sI9RSC7s4Vnptddey2QWyXXDDTdk/0rZPvvsk53vx2SDoJmQVCCJMQgCXtn6bbzHHntM/r1Dq9VK559/fmaWxPFc4AGcZFKUXq+6ecQRR2RvwLwm9mZqzz33zL4vXbo0nXjiienCCy/MCniXXXZJZ511VvZmy70DDzwwO8uzhTdTrVZrsjlvu+227BWuM40ff/xx8jUvZvKwf/HFF6e99torkX/80Qv8MSZoMQHpZpTTzYOPjTUc4XIJCBxzzDFJ0U4f3kI5vtVqZc8kau6FF15Iitt8Pg499ND08ssvJ88wHsbNt1qt9NJLL2X7fDf8vcfzzz+fNcaLL74440xvxKzbfPPNE5bgz+LFi7O/d5n65krNk2sYxlux3XffPekF/umNCRrMB/+Hls+6J8bX2V8sBQ7jh4Me0At6wuf/AwAA//+9WTVkAAAABklEQVQDAErT/B0WC5o2AAAAAElFTkSuQmCC'"
+        },
+        "empresa_id": {
+          "name": "empresa_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "vantagem_empresa_id_empresa_id_fk": {
+          "name": "vantagem_empresa_id_empresa_id_fk",
+          "tableFrom": "vantagem",
+          "tableTo": "empresa",
+          "columnsFrom": [
+            "empresa_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.transacao": {
+      "name": "transacao",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "motivo": {
+          "name": "motivo",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "data": {
+          "name": "data",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "valor": {
+          "name": "valor",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 1000
+        },
+        "professor_id": {
+          "name": "professor_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "aluno_id": {
+          "name": "aluno_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "transacao_professor_id_professor_id_fk": {
+          "name": "transacao_professor_id_professor_id_fk",
+          "tableFrom": "transacao",
+          "tableTo": "professor",
+          "columnsFrom": [
+            "professor_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "transacao_aluno_id_alunoT_id_fk": {
+          "name": "transacao_aluno_id_alunoT_id_fk",
+          "tableFrom": "transacao",
+          "tableTo": "alunoT",
+          "columnsFrom": [
+            "aluno_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    }
+  },
+  "enums": {},
+  "schemas": {},
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}

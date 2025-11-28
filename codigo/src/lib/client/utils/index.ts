@@ -5,3 +5,15 @@ export function formatCPF(cpf: string) {
 export function formatCurrency(value: number) {
     return `${value} moeda${value !== 1 ? 's' : ''}`;
 }
+
+export function formatDate(dateString: string | Date | undefined) {
+    if (!dateString) return 'N/A';
+    const date = new Date(dateString);
+    return date.toLocaleDateString('pt-BR', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+    });
+}

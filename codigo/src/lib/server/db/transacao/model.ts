@@ -4,7 +4,7 @@ import { professorT } from '$lib/server/db/professor/schema';
 import { transacaoT } from '$lib/server/db/transacao/schema';
 import { and, eq, sql } from 'drizzle-orm';
 import type { InferInsertModel } from 'drizzle-orm';
-import { vantagemT } from '../schema';
+import { vantagemResgatadaT, vantagemT } from '../schema';
 import { transporter } from '$lib/server/mail';
 import { env } from '$env/dynamic/private';
 
@@ -29,9 +29,13 @@ export const transacaoModel = {
 		});
 	},
 	async listarResgatesPorAluno(id: number) {
-		return await db.query.transacaoT.findMany({
-			where: and(eq(transacaoT.alunoId, id), sql`LOWER(${transacaoT.motivo}) LIKE ${'resgate%'}`),
-			orderBy: (t, { desc }) => [desc(t.data)]
+		return await db.query.vantagemResgatadaT.findMany({
+			where: and(eq(vantagemResgatadaT.aluno_id, id)),
+			with: {
+				vantagem: true,
+				transacao: true
+			},
+			orderBy: (t, { desc }) => [desc(t.resgatada_em)]
 		});
 	},
 	async listarExtratoAluno(idAluno: number) {
@@ -176,11 +180,18 @@ export const transacaoModel = {
 			const novaTransacao: InsertTransacao = {
 				id: crypto.randomUUID(),
 				motivo: `Resgate de vantagem: ${vantagem.descricao}`,
-				valor: valorVantagem,
+				valor: -valorVantagem,
 				alunoId: alunoId,
 				professorId: null
 			};
-			await tx.insert(transacaoT).values(novaTransacao);
+
+			const [transacaoInserida] = await tx.insert(transacaoT).values(novaTransacao).returning();
+
+			await tx.insert(vantagemResgatadaT).values({
+				aluno_id: alunoId,
+				vantagem_id: vantagemId,
+				transacao_id: transacaoInserida.id
+			})
 
 			return {
 				message: 'Vantagem resgatada com sucesso!',

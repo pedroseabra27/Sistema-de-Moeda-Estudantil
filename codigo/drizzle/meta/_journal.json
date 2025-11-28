@@ -22,6 +22,13 @@
       "when": 1764336146131,
       "tag": "0002_thick_blue_blade",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1764352837999,
+      "tag": "0003_robust_monster_badoon",
+      "breakpoints": true
     }
   ]
 }

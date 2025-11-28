@@ -113,19 +113,6 @@
 			{/each}
 		</div>
 
-		<div class="mt-8">
-			<div class="alert">
-				<AlertTriangle class="h-6 w-6 shrink-0 stroke-current" />
-				<div>
-					<h3 class="font-bold">Resumo</h3>
-					<p class="text-sm">
-						Você já resgatou <strong>{resgates.length}</strong>
-						{resgates.length === 1 ? 'vantagem' : 'vantagens'}, gastando um total de
-						<strong>{totalGasto}</strong> moedas.
-					</p>
-				</div>
-			</div>
-		</div>
 	{/await}
 </div>
 

@@ -72,7 +72,7 @@
 >
 	<div class="border-base-200 border-b p-4">
 		<div class="flex items-center">
-			<span class="mx-3 text-lg font-bold text-[var(--sidebar-foreground)]">Sistema de Moeda</span>
+			<span class="text-lg font-bold text-[var(--sidebar-foreground)]">Sistema de Moeda</span>
 		</div>
 	</div>
 

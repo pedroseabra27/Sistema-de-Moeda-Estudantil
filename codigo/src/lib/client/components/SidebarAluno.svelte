@@ -74,8 +74,8 @@
 >
 	<div class="border-base-200 border-b p-4">
 		<a href="/aluno" class="flex items-center gap-3 no-underline">
-			<img src={logoUrl} alt="BNP Coin" class="h-12 w-12 logo-coin" />
-			<span class="mx-3 text-lg font-bold">Portal do Aluno</span>
+			<img src={logoUrl} alt="BNP Coin" class="h-10 w-10 logo-coin" />
+			<span class="text-lg font-bold">Portal do Aluno</span>
 		</a>
 	</div>
 

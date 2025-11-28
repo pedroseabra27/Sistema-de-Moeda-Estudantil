@@ -74,7 +74,7 @@
 	<div class="border-base-200 border-b p-4">
 	    <a href="/professor" class="flex items-center gap-3 no-underline">
 		    <img src={logoUrl} alt="BNP Coin" class="h-10 w-10 logo-coin" />
-		    <span class="mx-3 text-lg font-bold text-[var(--sidebar-foreground)]">Sistema de Moeda</span>
+		    <span class="text-lg font-bold text-[var(--sidebar-foreground)]">Sistema de Moeda</span>
 	    </a>
 	</div>
 

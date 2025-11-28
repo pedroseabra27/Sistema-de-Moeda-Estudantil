@@ -3,11 +3,36 @@
 	import { listarResgatesAluno } from '$lib/client/controller/transacao.remote';
 	import { formatDate } from '$lib/client/utils';
 	import { base64ToImageUrl } from '$lib/client/utils/image';
-	import { Gift, Calendar, Coins, Package, AlertTriangle } from '@lucide/svelte';
+	import type { SelectVantagemResgatada } from '$lib/server/db/schema';
+	import { Gift, Calendar, Package, AlertTriangle, Eye, Info } from '@lucide/svelte';
+	import QRCode from 'qrcode';
 
 	let { data } = $props();
 
 	let alunoId = $derived(data.aluno.id);
+
+	let isModalCodigo = $state<HTMLDialogElement | null>(null);
+	let selectedVantagem: SelectVantagemResgatada | null = $state(null);
+	let qrDataUrl: string | null = $state(null);
+
+	async function openCodigoModal(vantagem: SelectVantagemResgatada) {
+		selectedVantagem = vantagem;
+		qrDataUrl = null;
+		try {
+			qrDataUrl = await QRCode.toDataURL(vantagem.codigo_resgate, {
+				width: 200,
+				margin: 2,
+				color: {
+					dark: '#000000',
+					light: '#FFFFFF'
+				}
+			});
+		} catch (err) {
+			console.error('Erro gerando QR Code:', err);
+			qrDataUrl = null;
+		}
+		isModalCodigo?.showModal();
+	}
 </script>
 
 <div class="p-4">
@@ -21,8 +46,8 @@
 				<p class="text-gray-600">Veja todas as vantagens que você já resgatou.</p>
 			</div>
 			<div class="stats bg-primary shadow">
-				<div class="stat text-white ">
-					<div class="stat-figure ">
+				<div class="stat text-white">
+					<div class="stat-figure">
 						<Package class="h-8 w-8" />
 					</div>
 					<div class="stat-title text-white">Total de Resgates</div>
@@ -31,16 +56,21 @@
 				</div>
 			</div>
 		</div>
-		<div class="{resgates.length > 0 ? 'grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4' : ''}">
+		<div class={resgates.length > 0 ? 'grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4' : ''}>
 			{#each resgates as resgate}
 				<div
-					class="card border-base-300 bg-base-100 border shadow-lg transition-shadow hover:shadow-xl overflow-hidden"
+					class="card border-base-300 bg-base-100 overflow-hidden border shadow-lg transition-shadow hover:shadow-xl"
 				>
-					<figure class="w-full h-60 bg-base-200 overflow-hidden">
-						<img 
-							src={base64ToImageUrl(resgate.vantagem.image)} 
+					<div class="absolute right-2 top-2 flex flex-col items-end">
+						<button class="btn btn-xs btn-primary" onclick={() => openCodigoModal(resgate)}
+							><Eye class="h-4 w-4" />Ver código</button
+						>
+					</div>
+					<figure class="bg-base-200 h-60 w-full overflow-hidden">
+						<img
+							src={base64ToImageUrl(resgate.vantagem.image)}
 							alt={resgate.vantagem.descricao}
-							class="w-full h-full object-cover"
+							class="h-full w-full object-cover"
 						/>
 					</figure>
 
@@ -98,3 +128,43 @@
 		</div>
 	{/await}
 </div>
+
+<dialog bind:this={isModalCodigo} class="modal" onclose={() => { selectedVantagem = null; qrDataUrl = null }}>
+	<div class="modal-box">
+		<form method="dialog">
+			<button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+		</form>
+		{#if selectedVantagem}
+			<h3 class="mb-4 text-lg font-bold">Código de Resgate</h3>
+
+			<p class="text-base-content mb-4">
+				Aqui está o código para a vantagem resgatada. Apresente este código para resgatar seu
+				benefício.
+			</p>
+
+			<div class="alert alert-info mb-4">
+				<Info class="h-6 w-6 shrink-0 stroke-current" />
+				<span class="text-sm">Guarde este código com segurança.</span>
+			</div>
+
+			{#if qrDataUrl}
+				<div class="flex items-center justify-center mb-4">
+					<img src={qrDataUrl} alt="QR Code de Resgate" class="h-48 w-48 rounded-md border p-1" />
+				</div>
+			{:else}
+				<div class="flex items-center justify-center mb-4">
+					<span class="text-sm text-gray-500">Gerando QR Code...</span>
+				</div>
+			{/if}
+
+			<div
+				class="flex items-center justify-center rounded-md border bg-gray-100 p-4 font-mono text-lg"
+			>
+				{selectedVantagem.codigo_resgate}
+			</div>
+		{/if}
+	</div>
+	<form method="dialog" class="modal-backdrop">
+		<button>close</button>
+	</form>
+</dialog>

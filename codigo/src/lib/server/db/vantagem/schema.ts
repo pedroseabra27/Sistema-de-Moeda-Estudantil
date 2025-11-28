@@ -29,6 +29,9 @@ export const vantagemResgatadaT = pgTable('vantagem_resgatada', {
 	resgatada_em: timestamp('resgatada_em').notNull().defaultNow()
 });
 
+export type SelectVantagemResgatada = typeof vantagemResgatadaT.$inferSelect;
+export type InsertVantagemResgatada = typeof vantagemResgatadaT.$inferInsert;
+
 export const vantagemResgatadaRelations = relations(vantagemResgatadaT, ({ one }) => ({
 	vantagem: one(vantagemT, {
 		fields: [vantagemResgatadaT.vantagem_id],

@@ -83,7 +83,7 @@
 	</div>
 
 	{#await listarVantagens()}
-		<Loading/>
+		<Loading />
 	{:then vantagens}
 		{#if vantagens.length === 0}
 			<div class="py-12 text-center">

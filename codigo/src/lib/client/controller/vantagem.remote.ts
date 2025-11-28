@@ -15,21 +15,22 @@ export const listarVantagensPorEmpresa = query(z.number(), async (empresaId) => 
 });
 
 export const inserirVantagem = command(z.custom<InsertVantagem>(), async (info) => {
+
 	await vantagemModel.criar(info);
-	await listarVantagens().refresh();
+	await listarVantagensPorEmpresa(info.empresa_id).refresh();
 });
 
 export const editarVantagem = command(
 	z.object({
 		id: z.number(),
-		info: z.object({
-			descricao: z.string().optional(),
-			valor: z.string().optional()
-		})
+		info: z.custom<Partial<InsertVantagem>>()
 	}),
 	async ({ id, info }) => {
+		if (!info.empresa_id) {
+			throw new Error('empresa_id é obrigatório para editar uma vantagem.');
+		}
 		await vantagemModel.atualizar(id, info);
-		await listarVantagens().refresh();
+		await listarVantagensPorEmpresa(info.empresa_id).refresh();
 	}
 );
 

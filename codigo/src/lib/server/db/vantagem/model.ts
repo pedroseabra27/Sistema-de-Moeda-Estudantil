@@ -24,7 +24,8 @@ export const vantagemModel = {
 			where: eq(vantagemT.empresa_id, empresaId),
 			with: {
 				empresa: true
-			}
+			},
+			orderBy: (v, { asc }) => [asc(v.valor)]
 		});
 	},
 	criar: async (info: InsertVantagem) => {

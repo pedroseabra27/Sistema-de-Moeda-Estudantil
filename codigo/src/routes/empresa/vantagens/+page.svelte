@@ -4,33 +4,66 @@
 	import { Pencil, Trash, Plus, X } from '@lucide/svelte';
 	import { toast } from 'svelte-sonner';
 	import { fly } from 'svelte/transition';
+	import { base64ToImageUrl } from '$lib/client/utils/image';
 
 	let { data } = $props();
+
 	let empresaId = $derived(data.empresa.id);
 	
-	let editingVantagem: SelectVantagem = $state({
+	let editingVantagem: SelectVantagem & { imagePreview?: string } = $state({
 		id: 0,
 		descricao: '',
 		valor: '0',
-		empresa_id: empresaId
+		image: '',
+		empresa_id: 0
 	});
 
 	let isLoading = $state(false);
+	let imageInput: HTMLInputElement | null = $state(null);
+
+	let isVantagemModal: HTMLDialogElement | null = $state(null);
 
 	function openCreateModal() {
 		editingVantagem = {
 			id: 0,
 			descricao: '',
 			valor: '0',
+			image: '',
 			empresa_id: empresaId
 		};
-		const modal = document.getElementById('vantagem_modal') as HTMLDialogElement;
-		modal.showModal();
+		isVantagemModal?.showModal();
 	}
 
 	function closeModal() {
-		const modal = document.getElementById('vantagem_modal') as HTMLDialogElement;
-		modal.close();
+		isVantagemModal?.close();
+	}
+
+	function handleImageChange(e: Event) {
+		const target = e.target as HTMLInputElement;
+		const file = target.files?.[0];
+		
+		if (!file) return;
+
+		if (!file.type.startsWith('image/')) {
+			toast.error('Por favor, selecione um arquivo de imagem válido');
+			return;
+		}
+
+		if (file.size > 5 * 1024 * 1024) {
+			toast.error('Imagem muito grande. Máximo 5MB');
+			return;
+		}
+
+		const reader = new FileReader();
+		reader.onload = (event) => {
+			const base64 = event.target?.result as string;
+			editingVantagem.image = base64;
+			editingVantagem.imagePreview = base64;
+		};
+		reader.onerror = () => {
+			toast.error('Erro ao ler a imagem');
+		};
+		reader.readAsDataURL(file);
 	}
 
 	async function handleSubmit(e: Event) {
@@ -44,7 +77,9 @@
 					id: editingVantagem.id,
 					info: {
 						descricao: editingVantagem.descricao,
-						valor: editingVantagem.valor
+						valor: editingVantagem.valor,
+						image: editingVantagem.image,
+						empresa_id: editingVantagem.empresa_id
 					}
 				});
 				toast.success('Vantagem editada com sucesso!', { id: toastId });
@@ -52,6 +87,7 @@
 				await inserirVantagem({
 					descricao: editingVantagem.descricao,
 					valor: editingVantagem.valor,
+					image: editingVantagem.image,
 					empresa_id: editingVantagem.empresa_id
 				});
 				toast.success('Vantagem criada com sucesso!', { id: toastId });
@@ -65,9 +101,11 @@
 	}
 
 	function openEditModal(vantagem: SelectVantagem) {
-		editingVantagem = { ...vantagem };
-		const modal = document.getElementById('vantagem_modal') as HTMLDialogElement;
-		modal.showModal();
+		editingVantagem = { 
+			...vantagem,
+			imagePreview: base64ToImageUrl(vantagem.image)
+		};
+		isVantagemModal?.showModal();
 	}
 
 	async function deleteVantagem(id: number) {
@@ -112,6 +150,7 @@
 				<table class="table-zebra table w-full">
 					<thead>
 						<tr class="bg-base-200">
+							<th>Imagem</th>
 							<th>Descrição</th>
 							<th>Valor (Moedas)</th>
 							<th class="text-center">Ações</th>
@@ -120,6 +159,15 @@
 					<tbody>
 						{#each vantagens as vantagem (vantagem.id)}
 							<tr class="hover:bg-base-200 transition-colors duration-150">
+								<td>
+									<div class="w-24 h-14 bg-base-200 rounded-lg overflow-hidden">
+										<img 
+											src={base64ToImageUrl(vantagem.image)} 
+											alt={vantagem.descricao}
+											class="w-full h-full object-cover"
+										/>
+									</div>
+								</td>
 								<td class="font-medium">{vantagem.descricao}</td>
 								<td class="text-primary font-semibold">{vantagem.valor}</td>
 								<td class="flex justify-center gap-2">
@@ -141,7 +189,7 @@
 							</tr>
 						{:else}
 							<tr>
-								<td colspan="3" class="text-center py-8 text-gray-500">
+								<td colspan="4" class="text-center py-8 text-gray-500">
 									Nenhuma vantagem cadastrada. Clique em "Nova Vantagem" para começar.
 								</td>
 							</tr>
@@ -161,8 +209,8 @@
 	{/await}
 </div>
 
-<dialog id="vantagem_modal" class="modal">
-	<div class="modal-box max-w-2xl">
+<dialog bind:this={isVantagemModal} class="modal">
+	<div class="modal-box max-w-lg">
 		<h3 class="text-primary mb-6 text-xl font-bold">
 			{editingVantagem.id ? 'Editar Vantagem' : 'Nova Vantagem'}
 		</h3>
@@ -194,10 +242,44 @@
 					placeholder="Ex: 100"
 					required
 				/>
-				<label class="label">
+				<label class="label" for="valor">
 					<span class="label-text-alt">Quantidade de moedas que o aluno precisará para resgatar</span>
 				</label>
 			</div>
+
+			<!-- Image Upload -->
+			<div class="form-control">
+				<label class="label" for="image">
+					<span class="label-text font-medium">Imagem da Vantagem</span>
+				</label>
+				<input
+					type="file"
+					id="image"
+					bind:this={imageInput}
+					accept="image/*"
+					onchange={handleImageChange}
+					class="file-input file-input-bordered w-full"
+				/>
+				<label class="label" for="image">
+					<span class="label-text-alt">Selecione uma imagem (máximo 5MB)</span>
+				</label>
+			</div>
+
+			<!-- Image Preview -->
+			{#if editingVantagem.imagePreview}
+				<div class="form-control">
+					<div class="mb-2">
+						<span class="font-medium text-sm">Pré-visualização</span>
+					</div>
+					<div class="w-full h-60 bg-base-200 rounded-lg overflow-hidden">
+						<img 
+							src={editingVantagem.imagePreview} 
+							alt="preview"
+							class="w-full h-full object-cover"
+						/>
+					</div>
+				</div>
+			{/if}
 
 			<div class="modal-action mt-8">
 				<button type="button" class="btn btn-outline" onclick={closeModal} disabled={isLoading}>

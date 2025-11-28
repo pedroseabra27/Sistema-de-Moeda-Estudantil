@@ -15,7 +15,7 @@
 	let imageUrl = base64ToImageUrl(vantagem.image);
 </script>
 
-<div class="card border border-base-200 bg-base-100 shadow-lg hover:shadow-xl transition-shadow {!canAfford ? 'opacity-60' : ''}">
+<div class="card border border-base-300 bg-base-100 shadow-lg hover:shadow-xl transition-shadow {!canAfford ? 'opacity-60' : ''}">
 	<figure class="relative w-full h-48 bg-base-200 overflow-hidden">
 		<img 
 			src={imageUrl} 
@@ -28,7 +28,7 @@
 	</figure>
 
 	<div class="card-body">
-		<p class="text-base-content text-lg font-semibold mb-3">{vantagem.descricao.toUpperCase()}</p>
+		<p class="text-base-content text-lg font-semibold">{vantagem.descricao.slice(0, 1).toUpperCase() + vantagem.descricao.slice(1)}</p>
 
 		{#if vantagem.empresa}
 			<div class="flex items-center gap-2 text-sm text-gray-500 mb-4">

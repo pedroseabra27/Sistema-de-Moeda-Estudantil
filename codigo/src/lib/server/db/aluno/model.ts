@@ -1,6 +1,7 @@
 import { eq } from 'drizzle-orm';
 import { db } from '..';
 import { alunoT, type InsertAluno, type SelectAluno } from './schema';
+import { user } from '../auth-schema';
 
 export const alunoModel = {
 	listar: async () => {
@@ -17,7 +18,11 @@ export const alunoModel = {
 		});
 	},
 	criar: async (info: InsertAluno) => {
-		return await db.insert(alunoT).values(info);
+		return await db.transaction(async (tx) => {
+			await tx.insert(alunoT).values(info).returning();
+
+			return await tx.update(user).set({ role: 'estudante' }).where(eq(user.id, info.user_id)).returning();
+		})
 	},
 	atualizar: async (id: SelectAluno['id'], newInfo: Partial<InsertAluno>) => {
 		return await db.update(alunoT).set(newInfo).where(eq(alunoT.id, id));

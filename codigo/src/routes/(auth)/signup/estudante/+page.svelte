@@ -2,7 +2,7 @@
 	import CommonForm from '$lib/client/components/CommonForm.svelte';
 	import { inserirAluno } from '$lib/client/controller/aluno.remote';
 	import type { PageProps } from './$types';
-		import { authClient } from '$lib/client/auth-client';
+	import { authClient } from '$lib/client/auth-client';
 
 	let { data }: PageProps = $props();
 
@@ -39,11 +39,6 @@
 				endereco: formData.endereco
 			});
 
-			// const user = await authClient.admin.setRole({
-			// 	userId,
-			// 	role: 'estudante'
-			// });
-
 		} catch (error) {
 			throw new Error('Erro ao criar aluno');
 		}
@@ -51,7 +46,7 @@
 </script>
 
 <CommonForm
-redirect={"/aluno"}
+	redirect={'/aluno'}
 	bind:formData
 	handleCreate={async (uId) => {
 		await handleCreate(uId);

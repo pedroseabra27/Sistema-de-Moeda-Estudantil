@@ -1,20 +1,17 @@
 <script lang="ts">
 	import { authClient } from '$lib/client/auth-client';
 	import Form from '$lib/client/components/Form.svelte';
-	import { Eye, EyeOff, Mail, Lock, User, Home } from '@lucide/svelte';
+	import { Eye, EyeOff, Mail, Lock } from '@lucide/svelte';
 	import { toast } from 'svelte-sonner';
 
 	let isLoading = $state(false);
 	let showPassword = $state(false);
 
-	let formData = $state({
-		email: '',
-		password: '',
-		remember: false
-	});
+	let email = $state('');
+	let password = $state('');
+	let remember = $state(false);
 
-	async function handleSubmit(e: Event) {
-		e.preventDefault();
+	async function handleSubmit() {
 		isLoading = true;
 
 		const toastId = toast.loading('Logando...');
@@ -22,10 +19,10 @@
 		try {
 			const { data, error } = await authClient.signIn.email(
 				{
-					email: formData.email,
-					password: formData.password,
+					email: email,
+					password: password,
 					callbackURL: '/',
-					rememberMe: formData.remember
+					rememberMe: remember
 				},
 				{
 					onSuccess: (ctx) => {
@@ -65,8 +62,8 @@
 			name="email"
 			class="grow"
 			placeholder="Seu e-mail"
-			bind:value={formData.email}
 			required
+			bind:value={email}
 		/>
 	</label>
 
@@ -78,7 +75,7 @@
 			class="grow"
 			placeholder="Sua senha"
 			required
-			bind:value={formData.password}
+			bind:value={password}
 		/>
 		<button
 			type="button"
@@ -98,14 +95,14 @@
 			<input
 				type="checkbox"
 				class="checkbox checkbox-primary checkbox-sm"
-				bind:value={formData.remember}
+				bind:checked={remember}
 			/>
 			<span class="label-text text-xs">Lembrar-me</span>
 		</label>
 		<a href="/recuperar-senha" class="link link-primary link-hover text-xs">Esqueceu sua senha?</a>
 	</div>
 
-	<button class="btn btn-primary w-full" disabled={isLoading} onclick={handleSubmit}>
+	<button class="btn btn-primary  w-full" disabled={isLoading} onclick={handleSubmit}>
 		{#if isLoading}
 			<span class="loading loading-spinner loading-xs"></span>
 			Entrando...

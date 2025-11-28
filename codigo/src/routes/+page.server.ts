@@ -10,12 +10,12 @@ export const load = (async ({ locals }) => {
 
     if (user.role === 'professor') {
         throw redirect(303, '/professor');
-    }
-    if (user.role === 'estudante') {
+    } else if (user.role === 'estudante') {
         throw redirect(303, '/aluno');
-    }
-    if (user.role === 'empresa') {
+    } else if (user.role === 'empresa') {
         throw redirect(303, '/empresa');
+    } else if (user.role === 'admin' || user.role === 'user') {
+        throw redirect(303, '/admin/alunos');
     }
 
     return {};

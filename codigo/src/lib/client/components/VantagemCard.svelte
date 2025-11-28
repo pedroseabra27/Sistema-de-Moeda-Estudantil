@@ -2,6 +2,7 @@
 	import { Coins, Building2 } from '@lucide/svelte';
 	import { base64ToImageUrl } from '$lib/client/utils/image';
 	import type { ListarVantagesWithEmpresa } from '$lib/client/controller/vantagem.remote';
+	import { formatCurrency } from '../utils';
 
 	interface Props {
 		vantagem: ListarVantagesWithEmpresa;
@@ -23,7 +24,7 @@
 			class="w-full h-full object-cover"
 		/>
 		<div class="absolute top-3 right-3 badge badge-primary badge-lg">
-			{vantagem.valor} <Coins class="w-4 h-4 ml-1" />
+			{formatCurrency(vantagem.valor)}
 		</div>
 	</figure>
 

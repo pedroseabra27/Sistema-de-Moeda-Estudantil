@@ -2,8 +2,8 @@ export function formatCPF(cpf: string) {
     return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
 }
 
-export function formatCurrency(value: number) {
-    return `${value} moeda${value !== 1 ? 's' : ''}`;
+export function formatCurrency(value: number | string) {
+    return `${Number(value).toFixed(0)} moeda${Number(value) !== 1 ? 's' : ''}`;
 }
 
 export function formatDate(dateString: string | Date | undefined) {

@@ -175,9 +175,9 @@ GMAIL_PASSWORD="aaaa bbbb cccc dddd"
    - `npm run dev`
 7. Abrir http://localhost:5173 e está pronto para o uso!
 
-### Como fazer deploy na Railway
+## Como fazer deploy na Railway
 
-## De acordo com nosso projeto:
+### De acordo com nosso projeto:
 
 1. Criar conta na plataforma https://railway.com
 2. Vincular uma conta do github

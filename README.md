@@ -184,11 +184,12 @@ GMAIL_PASSWORD="aaaa bbbb cccc dddd"
 3. Criar um projeto
 4. Clicar no botão "Create"
 5. Selecionar Database e criar um banco de dados postgres
-6. Clicar no botão "Create", selecionar um repositorio no github
-7. Utilizar um docker ou template da propria plataforma
-8. Na aba de "Variables" colocar todas variaveis de ambiente
-9. Gerar um link publico
-10. Clicar no botão "Deploy" e está pronto!
+6. Alterar `package.json` do projeto e no objeto "scripts" colocar seguinte comando: `"start": "node src/index.js",`
+7. Clicar no botão "Create", selecionar um repositorio no github
+8. Utilizar um docker ou template da propria plataforma
+9. Na aba de "Variables" colocar todas variaveis de ambiente
+10. Gerar um link publico
+11. Clicar no botão "Deploy" e está pronto!
 
 ### Estrutura de Pastas
 

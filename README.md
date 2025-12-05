@@ -42,6 +42,7 @@
 ---
 
 ## 📚 Índice
+
 - [Links Úteis](#-links-úteis)
 - [Sobre o Projeto](#-sobre-o-projeto)
 - [Funcionalidades Principais](#-funcionalidades-principais)
@@ -57,9 +58,10 @@
 ---
 
 ## 🔗 Links Úteis
-* 🌐 **Demo Online:** [Acesse a Aplicação (Railway)](https://sistema-de-moeda-estudantil-production.up.railway.app/login)
+
+- 🌐 **Demo Online:** [Acesse a Aplicação (Railway)](https://sistema-de-moeda-estudantil-production.up.railway.app/login)
   > 💻 **Descrição:** Link para a aplicação rodando em ambiente de produção na Railway.
-* 📂 **Repositório:** [GitHub Repo](https://github.com/pedroseabra27/Sistema-de-Moeda-Estudantil)
+- 📂 **Repositório:** [GitHub Repo](https://github.com/pedroseabra27/Sistema-de-Moeda-Estudantil)
   > 📦 **Descrição:** Código fonte completo do projeto.
 
 ---
@@ -72,6 +74,7 @@ Este projeto foi desenvolvido para atender aos requisitos dos Laboratórios 03, 
 Professores recebem uma verba semestral em moedas virtuais para distribuir aos alunos. Alunos acumulam essas moedas e as trocam por vantagens (descontos em mensalidade, refeições, materiais) cadastradas por empresas parceiras.
 
 **Principais Atores:**
+
 - **Aluno:** Realiza cadastro, recebe moedas, consulta extrato e resgata vantagens.
 - **Professor:** Já pré-cadastrado no sistema; recebe dotação de moedas e premia alunos.
 - **Empresa Parceira:** Cadastra vantagens e valida os cupons apresentados pelos alunos.
@@ -104,11 +107,11 @@ Professores recebem uma verba semestral em moedas virtuais para distribuir aos a
 
 ### 💻 Full-stack (SvelteKit)
 
-* **Framework:** [SvelteKit](https://kit.svelte.dev/) 
-* **Estilização:** [TailwindCSS](https://tailwindcss.com/)
-* **Banco de Dados:** [PostgreSQL](https://www.postgresql.org/)
-* **ORM:** [Drizzle ORM](https://orm.drizzle.team/)
-* **Deploy:** [Railway](https://railway.app/)
+- **Framework:** [SvelteKit](https://kit.svelte.dev/)
+- **Estilização:** [TailwindCSS](https://tailwindcss.com/)
+- **Banco de Dados:** [PostgreSQL](https://www.postgresql.org/)
+- **ORM:** [Drizzle ORM](https://orm.drizzle.team/)
+- **Deploy:** [Railway](https://railway.app/)
 
 ---
 
@@ -122,16 +125,15 @@ O sistema segue o padrão **MVC (Model-View-Controller)** adaptado para a arquit
 
 ### Diagramas (Exemplos)
 
-> [!TIP]
-> [Diagramas](https://github.com/pedroseabra27/Sistema-de-Moeda-Estudantil/tree/main/diagramas/)
+> [!TIP] > [Diagramas](https://github.com/pedroseabra27/Sistema-de-Moeda-Estudantil/tree/main/diagramas/)
 
-| Modelagem de Dados | 
-| :---: | 
-| **Modelo ER** | 
-| <img width="1800" height="1140" alt="diagramaER (1)" src="https://github.com/user-attachments/assets/697b74f8-bb3e-4da5-9256-6d8f64864dd1" /> | 
-| Diagrama de Componentes | 
-| **Visão Geral** | 
-| <img width="2560" height="4160" alt="diagramaDeComponentes" src="https://github.com/user-attachments/assets/0b6cc273-7926-45d9-a478-6e343d30f6d6" /> | 
+|                                                                  Modelagem de Dados                                                                  |
+| :--------------------------------------------------------------------------------------------------------------------------------------------------: |
+|                                                                    **Modelo ER**                                                                     |
+|    <img width="1800" height="1140" alt="diagramaER (1)" src="https://github.com/user-attachments/assets/697b74f8-bb3e-4da5-9256-6d8f64864dd1" />     |
+|                                                               Diagrama de Componentes                                                                |
+|                                                                   **Visão Geral**                                                                    |
+| <img width="2560" height="4160" alt="diagramaDeComponentes" src="https://github.com/user-attachments/assets/0b6cc273-7926-45d9-a478-6e343d30f6d6" /> |
 
 ---
 
@@ -139,13 +141,13 @@ O sistema segue o padrão **MVC (Model-View-Controller)** adaptado para a arquit
 
 ### Pré-requisitos
 
-* **Node.js:** Versão LTS (v18.x ou superior).
-* **Gerenciador de Pacotes:** npm, yarn ou pnpm.
-* **Banco de Dados:** PostgreSQL rodando localmente ou via Docker.
+- **Node.js:** Versão LTS (v18.x ou superior).
+- **Gerenciador de Pacotes:** npm, yarn ou pnpm.
+- **Banco de Dados:** PostgreSQL rodando localmente ou via Docker.
 
 ### 🔑 Variáveis de Ambiente
 
-Crie um arquivo **`.env`** na raiz do projeto com as seguintes configurações (exemplo):
+Crie um arquivo **`.env`** dentro da pasta codigo com as seguintes configurações (exemplo):
 
 ```env
 # Conexão com o Banco de Dados (PostgreSQL)
@@ -167,23 +169,41 @@ GMAIL_PASSWORD="aaaa bbbb cccc dddd"
    - `cd codigo`
    - `npm install`
 3. Configurar variaves de ambiente (Criar postgres local ou já hospedado, e criar senha de app no gmail)
-3. Ambiente de desenvolvimento
+4. - `npm run db:generate` para gerar alterações ao banco de dados
+5. - `npm run db:migrate` para aplicar migrações
+6. Ambiente de desenvolvimento
    - `npm run dev`
+7. Abrir http://localhost:5173 e está pronto para o uso!
+
+### Como fazer deploy na Railway
+
+## De acordo com nosso projeto:
+
+1. Criar conta na plataforma https://railway.com
+2. Vincular uma conta do github
+3. Criar um projeto
+4. Clicar no botão "Create"
+5. Selecionar Database e criar um banco de dados postgres
+6. Clicar no botão "Create", selecionar um repositorio no github
+7. Utilizar um docker ou template da propria plataforma
+8. Na aba de "Variables" colocar todas variaveis de ambiente
+9. Gerar um link publico
+10. Clicar no botão "Deploy" e está pronto!
 
 ### Estrutura de Pastas
 
-   ```
+```
 src/
-  app.html
-  app.css
-  routes/
-    /(auth)
-      /login ← Realizar login
-      /signup ← Realizar cadastro
-      /admin
-         /alunos ← Rota pra administrador gerenciar os alunos
-         /empresas ← Rota pra administrador gerenciar as empresas
-         /professor ← Rota pra administrador gerenciar os professores
-  lib/
+app.html
+app.css
+routes/
+ /(auth)
+   /login ← Realizar login
+   /signup ← Realizar cadastro
+   /admin
+      /alunos ← Rota pra administrador gerenciar os alunos
+      /empresas ← Rota pra administrador gerenciar as empresas
+      /professor ← Rota pra administrador gerenciar os professores
+lib/
 
 ```

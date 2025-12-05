@@ -59,7 +59,7 @@
 
 ## 🔗 Links Úteis
 
-- 🌐 **Demo Online:** [Acesse a Aplicação (Railway)](https://sistema-de-moeda-estudantil-production.up.railway.app/login)
+🌐 **Demo Online:** [Acesse a Aplicação (Railway)](https://sistema-de-moeda-estudantil-production.up.railway.app/login)
   > 💻 **Descrição:** Link para a aplicação rodando em ambiente de produção na Railway.
 
 ### 📘 Contas de testes
@@ -78,7 +78,8 @@ Use estas contas para acessar o ambiente de testes:
 - **Email:** brenoca40@gmail.com  
 - **Senha:** senha123  
 
-- 📂 **Repositório:** [GitHub Repo](https://github.com/pedroseabra27/Sistema-de-Moeda-Estudantil)
+
+📂 **Repositório:** [GitHub Repo](https://github.com/pedroseabra27/Sistema-de-Moeda-Estudantil)
   > 📦 **Descrição:** Código fonte completo do projeto.
 
 ---
